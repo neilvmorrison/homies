@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("NEXT_PUBLIC_DATABASE_URL")
+}
+
+enum PropertyType {
+  APARTMENT
+  BASEMENT
+  CONDOMINIUM
+  HOUSE
+  TOWNHOUSE
+}
+
+enum PropertySubType {
+  MAIN_LEVEL
+  UPPER_LEVEL
+  LOWER_LEVEL
+}
+
+enum RentalApplicationStatus {
+  DRAFT
+  APPROVED
+  REJECTED
+  PENDING
+}
+
+enum UserRole {
+  TENANT
+  LANDLORD
+  REPRESENTATIVE
+  REALTOR
+}
+
+model User {
+  userSub     String        @id
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  email       String        @unique
+  UserProfile UserProfile[]
+}
+
+// model UserStats {
+//   id           String   @id @default(uuid())
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+//   deletedAt    DateTime?
+//   latePayments Int
+// }
+
+model UserProfile {
+  id                String              @id @default(uuid())
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  deletedAt         DateTime?
+  user              User                @relation(fields: [userSub], references: [userSub])
+  userSub           String
+  givenName         String
+  familyName        String
+  middleName        String?
+  birthdate         DateTime?
+  rating            Decimal?            @db.Decimal(4, 2)
+  RentalApplication RentalApplication[]
+  Listing           Listing[]
+}
+
+// model ListingStats {
+//   id           String   @id @default(uuid())
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+//   deletedAt    DateTime?
+//   accurate Boolean
+// }
+
+model Address {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  line1     String
+  line2     String?
+  line3     String?
+  unit      String?
+  latitude  Decimal   @db.Decimal(8, 6)
+  longitude Decimal   @db.Decimal(9, 6)
+  Listing   Listing?
+}
+
+model Listing {
+  id                String              @id @default(uuid())
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  deletedAt         DateTime?
+  title             String
+  description       String
+  rating            Decimal?            @db.Decimal(4, 2)
+  propertyType      PropertyType
+  proprtySubTypes   PropertySubType?
+  RentalApplication RentalApplication[]
+  owner             UserProfile         @relation(fields: [userProfileId], references: [id])
+  userProfileId     String
+  address           Address             @relation(fields: [addressId], references: [id])
+  addressId         String              @unique
+}
+
+model RentalApplication {
+  id                String                  @id @default(uuid())
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  deletedAt         DateTime?
+  applicationStatus RentalApplicationStatus @default(value: DRAFT)
+  applicants        UserProfile[]
+  listing           Listing                 @relation(fields: [listingId], references: [id])
+  listingId         String
+}
