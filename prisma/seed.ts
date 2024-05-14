@@ -154,6 +154,9 @@ async function main() {
             ],
             userProfileId: selectedLandlord.id,
             addressId: address.id,
+            bedrooms: 1,
+            bathrooms: 1.5,
+            sizeSQM: 46.45
           },
         });
 
