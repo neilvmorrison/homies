@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/Navbar";
 import { APPNAME } from "@/lib/consts";
-import { Suspense } from "react";
-import { getUserProfileId } from "./actions";
 import { createClient } from "@/utils/supabase/server";
 import Footer from "@/components/Footer";
 
@@ -26,7 +24,9 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NavBar user={data?.user} />
-        <Suspense fallback={<h1>Fuck you!</h1>}>{children}</Suspense>
+        <main className="min-h-[calc(100vh-88px)]">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

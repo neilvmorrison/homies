@@ -27,7 +27,7 @@ export default function Home() {
   }, [activeFilterState]);
 
   return (
-    <main className="h-[calc(min-h-screen - 60px)] m-24">
+    <main className="mx-24 my-12">
       <MainPageFilters
         onChange={(status: LISTING_STATUS) => setStatus(status)}
       />
