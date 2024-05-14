@@ -5,8 +5,7 @@ import {
   CURRENCY_CODES,
 } from "@prisma/client";
 import { faker } from "@faker-js/faker";
-
-const prisma = new PrismaClient();
+import prisma from "./prisma";
 
 async function main() {
   try {
