@@ -1,0 +1,276 @@
+enum LISTING_STATUS {
+  IMMEDIATE
+  UPCOMING
+  PENDING
+  LEASED
+  ARCHIVED
+}
+
+enum APPLICATION_STATUS {
+  PENDING
+  VIEWED
+  CONDITIONALLY_ACCEPTED
+  ACCEPTED
+  REJECTED
+}
+
+enum USER_ROLES {
+  TENANT
+  LANDLORD
+  REALTOR
+}
+
+enum LISTING_ACTIONS {
+  LISTED
+  NOTICE_GIVEN
+  PRICE_INCREASE
+  PRICE_DECREASE
+  LEASED
+  RENOVATION
+  REPAIR
+  INCIDENT
+  OWNERSHIP_CHANGE
+}
+
+enum CURRENCY_CODES {
+  CAD
+  USD
+  EUR
+  GBP
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userSub     String
+  email       String     @unique
+  givenName   String
+  middleName  String?
+  familyName  String
+  dateOfBirth DateTime?
+  avatar      String?
+  documents   String[]
+  role        USER_ROLES
+
+  listingsOwned        Listing[]
+  applications         PropertyApplication[]
+  listingReviews       ListingReview[]
+  authoredReviews      UserReview[]          @relation("AuthoredReviews")
+  subjectReviews       UserReview[]          @relation("SubjectReviews")
+  paymentHistory       UserPaymentRecord[]
+  ownerMessageThreads  MessageThread[]       @relation("OwnerMessages")
+  renterMessageThreads MessageThread[]       @relation("RenterMessages")
+  userMessage          UserMessage[]
+  favorites            UserFavoriteListing[]
+
+  @@map("user-profiles")
+}
+
+model PropertyApplication {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  status APPLICATION_STATUS @default(PENDING)
+
+  tenants   UserProfile[]
+  listing   Listing       @relation(fields: [listingId], references: [id])
+  listingId String
+
+  @@map("property-applications")
+}
+
+model Listing {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  title           String
+  description     String?
+  status          LISTING_STATUS @default(IMMEDIATE)
+  thumbnail       String
+  photoUrls       String[]
+  owner           UserProfile    @relation(fields: [userProfileId], references: [id])
+  userProfileId   String
+  address         Address        @relation(fields: [addressId], references: [id])
+  addressId       String
+  currentPrice    Decimal?       @db.Decimal(8, 2)
+  price           ListingPrice[]
+  bedrooms        Int
+  bathrooms       Decimal        @db.Decimal(2, 1)
+  sizeSQM         Decimal        @db.Decimal(6, 2)
+  parkingIncluded Boolean        @default(false)
+  petFriendly     Boolean        @default(false)
+  rentControlled  Boolean        @default(false)
+  storageIncluded Boolean        @default(false)
+
+  propertyApplication PropertyApplication[]
+  reviews             ListingReview[]
+  userPaymentRecords  UserPaymentRecord[]
+  userFavorites       UserFavoriteListing[]
+
+  @@map("listings")
+}
+
+model ListingPrice {
+  // for ease of calculating averages etc.
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  amount       Decimal        @db.Decimal(8, 2)
+  currencyCode CURRENCY_CODES
+
+  address   Address  @relation(fields: [addressId], references: [id])
+  addressId String
+  Listing   Listing? @relation(fields: [listingId], references: [id])
+  listingId String?
+
+  @@map("listing-prices")
+}
+
+model ListingEvent {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  action      LISTING_ACTIONS
+  description String?
+
+  @@map("listing-events")
+}
+
+model UserFavoriteListing {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  profile       UserProfile @relation(fields: [userProfileId], references: [id])
+  listing       Listing     @relation(fields: [listingId], references: [id])
+  userProfileId String
+  listingId     String
+
+  @@id([listingId, userProfileId])
+  @@map("user-favorite-listings")
+}
+
+model Address {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  streetName  String
+  civicNumber String
+  unitNumber  String?
+  city        String
+  country     String
+  postalCode  String
+  latitude    Decimal @db.Decimal(8, 6)
+  logitude    Decimal @db.Decimal(8, 6)
+
+  listings      Listing[]
+  listingPrices ListingPrice[]
+
+  @@map("addresses")
+}
+
+model ListingReview {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  accuracy     Int
+  comment      String   @db.VarChar(500)
+  photo_upload String[]
+
+  author    UserProfile @relation(fields: [authorId], references: [id])
+  authorId  String
+  listing   Listing     @relation(fields: [listingId], references: [id])
+  listingId String
+
+  @@id([authorId, listingId])
+  @@map("listing-reviews")
+}
+
+model UserReview {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  rating  Int
+  comment String @db.VarChar(500)
+
+  author   UserProfile @relation(fields: [authorId], references: [id], name: "AuthoredReviews")
+  authorId String
+
+  subject   UserProfile @relation(fields: [subjectId], references: [id], name: "SubjectReviews")
+  subjectId String
+
+  @@map("user-reviews")
+}
+
+model UserPaymentRecord {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  // is it tacky to set up as a subscription service?
+  amount           Decimal        @db.Decimal(8, 2)
+  currencyCode     CURRENCY_CODES
+  isCompleteAmount Boolean
+
+  payer     UserProfile @relation(fields: [payerId], references: [id])
+  payerId   String
+  listing   Listing     @relation(fields: [listingId], references: [id])
+  listingId String
+
+  @@map("user-payment-records")
+}
+
+model MessageThread {
+  // after user submits an application, a message thread for the listing appears
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  owners      UserProfile[] @relation("OwnerMessages")
+  renters     UserProfile[] @relation("RenterMessages")
+  UserMessage UserMessage[]
+
+  @@map("message-thread")
+}
+
+model UserMessage {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  author          UserProfile   @relation(fields: [authorId], references: [id])
+  authorId        String
+  content         String
+  messsageThread  MessageThread @relation(fields: [messageThreadId], references: [id])
+  messageThreadId String
+
+  @@map("user-messages")
+}

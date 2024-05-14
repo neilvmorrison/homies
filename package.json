@@ -3,24 +3,44 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "ENVIRONMENT=./.env.local next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate": "yarn prisma generate",
+    "db:push": "yarn prisma db push",
+    "db:seed": "tsc prisma/seed.ts && node prisma/seed.js && rm prisma/seed.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@prisma/client": "5.13.0",
+    "@radix-ui/react-aspect-ratio": "^1.0.3",
+    "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
+    "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@supabase/ssr": "^0.3.0",
+    "@supabase/supabase-js": "^2.43.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "next": "14.2.3",
+    "prisma": "^5.13.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.3"
+    "swr": "^2.2.5",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "typescript": "^5"
   }
 }
