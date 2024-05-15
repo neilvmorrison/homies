@@ -12,11 +12,12 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
+  // DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { getProfileByUserSub } from "@/lib/profiles";
 import { USER_ROLES } from "@prisma/client";
+import { APPNAME } from "@/lib/consts";
 
 const unauthenticatedItems = [
   {
@@ -134,6 +135,18 @@ export default async function UserNav({ user }: { user: any }) {
               })}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <Link href="/get-started">
+                <DropdownMenuItem>
+                  I want to list my Property
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/learn-more">
+                <DropdownMenuItem>
+                  What is {APPNAME}?
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuGroup>
             <DropdownMenuItem>
               <Button variant="destructive" className="w-full">
                 Log out

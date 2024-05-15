@@ -1,4 +1,4 @@
-import { LISTING_STATUS } from "@prisma/client";
+import { LISTING_STATUS, Listing } from "@prisma/client";
 
 export function formatListingStatusOptions(status: LISTING_STATUS) { }
 

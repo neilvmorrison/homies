@@ -1,4 +1,4 @@
-import { LISTING_STATUS, Listing, Prisma } from "@prisma/client";
+import { LISTING_STATUS, Listing, ListingPrice, Prisma } from "@prisma/client";
 import prisma from "../../../prisma/prisma";
 
 export async function getAllListings(): Promise<Listing[]> {
@@ -9,9 +9,8 @@ export async function getAllListings(): Promise<Listing[]> {
   });
 }
 
-export type ListingWithAddressAndPrice = Prisma.ListingGetPayload<{
+export type ListingWithAddress = Prisma.ListingGetPayload<{
   include: {
-    price: true;
     address: {
       select: {
         city: true;
@@ -22,15 +21,20 @@ export type ListingWithAddressAndPrice = Prisma.ListingGetPayload<{
       };
     };
   };
-}>;
+}>
+
+export type SListingWithAddress = Pick<ListingWithAddress, Exclude<keyof ListingWithAddress, 'currentPrice' | 'sizeSQM' | 'bathrooms'>> & {
+  currentPrice: number | undefined;
+  sizeSQM: number;
+  bathrooms: number;
+};
 
 export async function getFilteredListingsByStatus(
   listingStatus: LISTING_STATUS
-): Promise<ListingWithAddressAndPrice[]> {
-  return prisma.listing.findMany({
+): Promise<SListingWithAddress[]> {
+  const listings = await prisma.listing.findMany({
     where: { status: listingStatus },
     include: {
-      price: true,
       address: {
         select: {
           city: true,
@@ -42,4 +46,11 @@ export async function getFilteredListingsByStatus(
       },
     },
   });
+  const serialized = listings.map((listing: ListingWithAddress) => ({
+    ...listing,
+    currentPrice: listing.currentPrice?.toNumber(),
+    sizeSQM: listing.sizeSQM.toNumber(),
+    bathrooms: listing.bathrooms.toNumber()
+  }));
+  return serialized;
 }

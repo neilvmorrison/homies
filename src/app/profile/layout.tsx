@@ -22,7 +22,7 @@ export default async function ProfileLayout({ children }: { children: ReactNode[
   const profile = await getUserProfile();
   return (
     <div className="mx-24 my-12">
-      <div className="flex items-center gap-4 mb-12">
+      <div className="flex items-start gap-4 mb-12">
         <Avatar className="h-[48px] w-[48px]">
           <AvatarImage src={profile?.avatar || ""} alt={`${profile?.givenName} ${profile?.familyName}`} />
           <AvatarFallback>{formatInitials([profile?.givenName as string, profile?.familyName as string])}</AvatarFallback>
@@ -30,7 +30,7 @@ export default async function ProfileLayout({ children }: { children: ReactNode[
         <div>
           <h1 className="font-bold text-lg">{profile?.givenName} {profile?.familyName}</h1>
           <h2 className="font-dimmed text-sm mb-2">{profile?.email}</h2>
-          <p className="text-sm font-medium">&#9733;4.75</p>
+          <p className="text-sm font-medium"><span className="text-yellow-400">&#9733;</span>4.75</p>
         </div>
       </div>
       <div className="flex gap-8">

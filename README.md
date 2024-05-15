@@ -1,6 +1,10 @@
 # Installation
 
 Run the following commands in your terminal
+
+## Install Homebrew
+1. [Follow instructions here](https://brew.sh/)
+
 ## Install Necessary system dependencies
 
 1. `brew install nvm`
@@ -21,6 +25,8 @@ Run the following commands in your terminal
 
 ## Setup project
 In the root of the project, run:
+1. Enter real values in `.env.sample`.
+1. `rn .env.sample .env`
 1. `yarn db:push`
 2. `yarn db:seed`
 3. `yarn dev`

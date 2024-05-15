@@ -8,10 +8,11 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import LikeListing from "./LikeListing";
 import Link from "next/link";
-import { ListingWithAddressAndPrice } from "@/lib/listings";
+import { SListingWithAddress } from "@/lib/listings";
+import ShareListing from "./ShareListing";
 
 interface IListingCardProps {
-  listing: ListingWithAddressAndPrice;
+  listing: SListingWithAddress;
 }
 
 function ListingCard({ listing }: IListingCardProps) {
@@ -28,12 +29,15 @@ function ListingCard({ listing }: IListingCardProps) {
       <CardHeader>
         <div className="flex justify-between items-center">
           <h3 className="font-bold font-md">
-            $ {Number(listing.currentPrice) || 2000}
+            $ {listing.currentPrice || 2000}
           </h3>
-          <LikeListing listingId={listing.id} userProfileId="" />
+          <div className="flex gap-2">
+            <ShareListing listingId={listing.id} />
+            <LikeListing listingId={listing.id} userProfileId="" />
+          </div>
         </div>
         <Link href={`/listing/${listing.id}`}>
-          <h2>{listing.title}</h2>
+          <h2 className="hover:underline">{listing.title}</h2>
         </Link>
         <p className="text-gray-500 text-xs">
           {listing.address.civicNumber} {listing.address.streetName},{" "}

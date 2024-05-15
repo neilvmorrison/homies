@@ -4,10 +4,10 @@ import ListingCard from "@/components/ListingCard";
 import { MainPageFilters } from "@/components/MainPageFilters";
 import { fetchFilteredListings } from "./actions";
 import { LISTING_STATUS, Listing } from "@prisma/client";
-import { ListingWithAddressAndPrice } from "@/lib/listings";
+import { SListingWithAddress } from "@/lib/listings";
 
 export default function Home() {
-  const [listings, setListings] = useState<ListingWithAddressAndPrice[]>([]);
+  const [listings, setListings] = useState<SListingWithAddress[]>([]);
   const [status, setStatus] = useState<LISTING_STATUS>(
     LISTING_STATUS.IMMEDIATE
   );
