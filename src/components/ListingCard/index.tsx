@@ -15,7 +15,7 @@ interface IListingCardProps {
   listing: SListingWithAddress;
 }
 
-function ListingCard({ listing }: IListingCardProps) {
+async function ListingCard({ listing }: IListingCardProps) {
   return (
     <Card key={listing.id}>
       <AspectRatio className="mb-3">

@@ -1,36 +1,25 @@
-"use client";
 import { useEffect, useMemo, useState } from "react";
 import ListingCard from "@/components/ListingCard";
-import { MainPageFilters } from "@/components/MainPageFilters";
+import MainPageFilters from "@/components/MainPageFilters";
 import { fetchFilteredListings } from "./actions";
-import { LISTING_STATUS, Listing } from "@prisma/client";
+import { LISTING_STATUS } from "@prisma/client";
 import { SListingWithAddress } from "@/lib/listings";
 
-export default function Home() {
-  const [listings, setListings] = useState<SListingWithAddress[]>([]);
-  const [status, setStatus] = useState<LISTING_STATUS>(
-    LISTING_STATUS.IMMEDIATE
-  );
-  const activeFilterState = useMemo(
-    () => ({
-      status,
-    }),
-    [status]
-  );
+type HomeProps = {
+  params?: {
+    num?: string;
+  };
+  searchParams?: {
+    status?: LISTING_STATUS;
+  };
+};
 
-  useEffect(() => {
-    async function hydrate() {
-      const listings = await fetchFilteredListings(activeFilterState);
-      setListings(listings);
-    }
-    hydrate();
-  }, [activeFilterState]);
+export default async function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | LISTING_STATUS } }) {
+  const listings = await fetchFilteredListings({ status: searchParams.status as LISTING_STATUS || LISTING_STATUS.IMMEDIATE })
 
   return (
     <main className="mx-24 my-12">
-      <MainPageFilters
-        onChange={(status: LISTING_STATUS) => setStatus(status)}
-      />
+      <MainPageFilters />
       <section className="grid grid-cols-4 gap-6 mt-4">
         {listings.map((listing) => {
           return <ListingCard key={listing.id} listing={listing} />;

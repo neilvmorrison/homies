@@ -1,7 +1,7 @@
 "use server";
 
 import {
-  ListingWithAddressAndPrice,
+  SListingWithAddress,
   getFilteredListingsByStatus,
 } from "@/lib/listings";
 import { createClient } from "@/utils/supabase/server";
@@ -15,7 +15,7 @@ interface IListingFilterParams {
 
 export async function fetchFilteredListings(
   filterParams: IListingFilterParams
-): Promise<ListingWithAddressAndPrice[]> {
+): Promise<SListingWithAddress[]> {
   return getFilteredListingsByStatus(filterParams.status);
 }
 
@@ -23,3 +23,5 @@ export async function getUserProfileId() {
   const user = await client.auth.getUser();
   return user;
 }
+
+export async function addToFavorites(listingId: string): Promise<void> { };
