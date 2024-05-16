@@ -46,10 +46,12 @@ export default async function Favorites() {
     <main className="min-h-[calc(100vh-60px)] mt-12 mx-24">
       <h1 className="text-lg font-bold mb-4">Favorites</h1>
       <Tabs defaultValue="saved" className="">
-        <TabsList className="grid grid-cols-2 w-[320px]">
-          <TabsTrigger value="saved">Saved</TabsTrigger>
-          <TabsTrigger value="shared-with-me">Shared with me</TabsTrigger>
-        </TabsList>
+        <div>
+          <TabsList className="grid grid-cols-2 w-[320px]">
+            <TabsTrigger value="saved">Saved</TabsTrigger>
+            <TabsTrigger value="shared-with-me">Shared with me</TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="saved" className="grid grid-cols-4 gap-6 mt-4">
           <Content
             listings={userFavorites}
