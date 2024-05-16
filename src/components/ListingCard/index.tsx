@@ -10,6 +10,8 @@ import LikeListing from './LikeListing'
 import Link from 'next/link'
 import { SListingWithAddress } from '@/lib/listings'
 import ShareListing from './ShareListing'
+import { Badge } from '../ui/badge'
+import { formatListingStatusText } from '@/lib/formatters'
 
 interface IListingCardProps {
   listing: SListingWithAddress
@@ -25,7 +27,10 @@ async function ListingCard({
   const isFavorite = userFavorites?.some((id) => listing.id === id)
   return (
     <Card key={listing.id}>
-      <AspectRatio className="mb-3">
+      <AspectRatio className="mb-3 relative">
+        <Badge variant={'default'} className="z-10 absolute top-4 right-4">
+          {formatListingStatusText(listing.status)}
+        </Badge>
         <Image
           alt={`${listing.title} image`}
           src={listing.thumbnail}
@@ -35,7 +40,7 @@ async function ListingCard({
       </AspectRatio>
       <CardHeader>
         <div className="flex justify-between items-center">
-          <h3 className="font-bold font-md">
+          <h3 className="font-bold text-xl">
             $ {listing.currentPrice || 2000}
           </h3>
           <div className="flex gap-2">

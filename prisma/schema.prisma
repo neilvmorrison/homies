@@ -119,6 +119,8 @@ model Listing {
   rentControlled  Boolean        @default(false)
   storageIncluded Boolean        @default(false)
 
+  overallRating Float?
+
   propertyApplication PropertyApplication[]
   reviews             ListingReview[]
   userPaymentRecords  UserPaymentRecord[]
