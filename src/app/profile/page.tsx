@@ -1,12 +1,7 @@
-import { formatInitials } from "@/lib/formatters";
-import { getProfileByUserSub } from "@/lib/profiles";
-import { createClient } from "@/utils/supabase/server"
-import Link from "next/link";
-
-export default function ProfilePage() {
+export default function ProfileHome() {
   return (
     <div>
-      <h2>Test Page</h2>
+      <h2>Profile Home</h2>
     </div>
   )
 }

@@ -3,19 +3,26 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-} from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import Image from "next/image";
-import LikeListing from "./LikeListing";
-import Link from "next/link";
-import { SListingWithAddress } from "@/lib/listings";
-import ShareListing from "./ShareListing";
+} from '@/components/ui/card'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import Image from 'next/image'
+import LikeListing from './LikeListing'
+import Link from 'next/link'
+import { SListingWithAddress } from '@/lib/listings'
+import ShareListing from './ShareListing'
 
 interface IListingCardProps {
-  listing: SListingWithAddress;
+  listing: SListingWithAddress
+  profileId: string | undefined
+  userFavorites?: string[]
 }
 
-async function ListingCard({ listing }: IListingCardProps) {
+async function ListingCard({
+  listing,
+  profileId,
+  userFavorites,
+}: IListingCardProps) {
+  const isFavorite = userFavorites?.some((id) => listing.id === id)
   return (
     <Card key={listing.id}>
       <AspectRatio className="mb-3">
@@ -33,14 +40,18 @@ async function ListingCard({ listing }: IListingCardProps) {
           </h3>
           <div className="flex gap-2">
             <ShareListing listingId={listing.id} />
-            <LikeListing listingId={listing.id} userProfileId="" />
+            <LikeListing
+              listingId={listing.id}
+              userProfileId={profileId}
+              isFavorite={isFavorite}
+            />
           </div>
         </div>
         <Link href={`/listing/${listing.id}`}>
           <h2 className="hover:underline">{listing.title}</h2>
         </Link>
         <p className="text-gray-500 text-xs">
-          {listing.address.civicNumber} {listing.address.streetName},{" "}
+          {listing.address.civicNumber} {listing.address.streetName},{' '}
           {listing.address.city}, {listing.address.country}
         </p>
       </CardHeader>
@@ -50,7 +61,7 @@ async function ListingCard({ listing }: IListingCardProps) {
         </CardDescription>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default ListingCard;
+export default ListingCard

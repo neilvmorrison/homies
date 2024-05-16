@@ -1,10 +1,44 @@
-import { UserFavoriteListing } from "@prisma/client";
-import prisma from "../../../prisma/prisma";
+import { Prisma, UserFavoriteListing } from '@prisma/client'
+import prisma from '../../../prisma/prisma'
+import { SListingWithAddress } from '.'
 
 export async function listUserFavorites(
   userProfileId: string
 ): Promise<UserFavoriteListing[]> {
-  return prisma.userFavoriteListing.findMany({ where: { userProfileId } });
+  return prisma.userFavoriteListing.findMany({ where: { userProfileId } })
+}
+
+export type UserFavoritesWithListing = Prisma.UserFavoriteListingGetPayload<{
+  include: {
+    listing: {
+      include: {
+        address: true
+      }
+    }
+  }
+}>
+
+export async function getListingsFromFavorites(
+  userProfileId: string
+): Promise<UserFavoritesWithListing[]> {
+  const favorites = await prisma.userFavoriteListing.findMany({
+    where: { userProfileId },
+    include: { listing: { include: { address: true } } },
+  })
+  const serialized = favorites.map((favorite) => {
+    const { listing } = favorite
+    const newListing = {
+      ...listing,
+      currentPrice: listing.currentPrice?.toNumber(),
+      sizeSQM: listing.currentPrice?.toNumber(),
+      bathrooms: listing.bathrooms.toNumber(),
+    }
+    return {
+      ...favorite,
+      listing: newListing,
+    }
+  })
+  return serialized
 }
 
 export async function addListingToFavorites(
@@ -13,7 +47,7 @@ export async function addListingToFavorites(
 ): Promise<void> {
   await prisma.userFavoriteListing.create({
     data: { userProfileId, listingId },
-  });
+  })
 }
 
 export async function removeListingFromFavorites(
@@ -28,7 +62,7 @@ export async function removeListingFromFavorites(
       },
     },
     data: { deletedAt: new Date() },
-  });
+  })
 }
 
 export async function shareFavorites(

@@ -3,22 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { APPNAME } from "@/lib/consts";
 import { formatInitials } from "@/lib/formatters";
-import { getProfileByUserSub } from "@/lib/profiles";
+import { getUserProfile } from "@/lib/profiles";
 import { createClient } from "@/utils/supabase/server";
 import { NextPage } from "next";
+import Link from "next/link";
 import { ReactNode } from "react";
 
-async function getUserProfile() {
-  const supabase = createClient();
-  const { data } = await supabase.auth.getUser();
-  if (data) {
-    return getProfileByUserSub(data?.user?.id as string);
-  }
-  return null;
-}
-
-
-export default async function ProfileLayout({ children }: { children: ReactNode[] }) {
+export default async function ProfileLayout({ children }: { children: ReactNode }) {
   const profile = await getUserProfile();
   return (
     <div className="mx-24 my-12">
@@ -41,9 +32,9 @@ export default async function ProfileLayout({ children }: { children: ReactNode[
           </CardHeader>
           <CardContent>
             <nav className="flex flex-col gap-4">
-              <Button variant="secondary">Personal Information</Button>
+              <Button variant="secondary" asChild><Link href={'/profile/personal-information'}>Personal Information</Link></Button>
               <Button variant="secondary">Renter&apos;s Application</Button>
-              <Button variant="secondary">Preferences</Button>
+              <Button variant="secondary" asChild><Link href={'/profile/preferences'}>Preferences</Link></Button>
               <Button variant="secondary">Payment History</Button>
               <Button variant="secondary">Notifications</Button>
               <Button variant="secondary">Messages</Button>

@@ -1,32 +1,40 @@
-"use client";
-import { HeartIcon } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
+'use client'
+import { HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons'
+import { Button } from '@/components/ui/button'
+import { addToFavorites } from '@/app/actions'
 
 interface ILikeListingProps {
-  listingId: string;
-  userProfileId: string;
-  isLiked?: boolean;
+  listingId: string
+  userProfileId?: string
+  isFavorite?: boolean
 }
 
 function LikeListing({
   listingId,
   userProfileId,
-  isLiked = false,
+  isFavorite = false,
 }: ILikeListingProps) {
-  const handleClick = () => {
-    alert(`${listingId} ${userProfileId}`);
-  };
+  const handleClick = async () => {
+    if (!userProfileId) {
+      return
+    }
+    await addToFavorites(listingId, userProfileId)
+  }
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
       onClick={handleClick}
       className="border-none z-10"
     >
-      <HeartIcon className="h-4 w-4" />
+      {isFavorite ? (
+        <HeartFilledIcon color="red" />
+      ) : (
+        <HeartIcon className="h-4 w-4" />
+      )}
     </Button>
-  );
+  )
 }
 
-export default LikeListing;
+export default LikeListing
