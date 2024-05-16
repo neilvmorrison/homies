@@ -1,9 +1,11 @@
-import { getListingsFromFavorites } from '@/lib/listings/favorites'
+import {
+  UserFavoriteWithListing,
+  getListingsFromFavorites,
+} from '@/lib/listings/favorites'
 import { getUserProfile } from '@/lib/profiles'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ListingCard from '@/components/ListingCard'
-import { Listing } from '@prisma/client'
 import NoListings from '@/components/NoListings'
 
 function Content({
@@ -11,7 +13,7 @@ function Content({
   profileId,
   favoriteIds,
 }: {
-  listings: any[]
+  listings: UserFavoriteWithListing[]
   profileId: string
   favoriteIds: string[]
 }) {
@@ -20,7 +22,7 @@ function Content({
   }
   return (
     <>
-      {listings.map((listing: Listing) => (
+      {listings.map((listing: UserFavoriteWithListing) => (
         <ListingCard
           key={listing.listingId}
           profileId={profileId}

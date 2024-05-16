@@ -18,9 +18,14 @@ export type UserFavoritesWithListing = Prisma.UserFavoriteListingGetPayload<{
   }
 }>
 
+export type UserFavoriteWithListing = Pick<
+  UserFavoritesWithListing,
+  Exclude<keyof UserFavoritesWithListing, 'listing'>
+> & { listing: SListingWithAddress }
+
 export async function getListingsFromFavorites(
   userProfileId: string
-): Promise<UserFavoritesWithListing[]> {
+): Promise<UserFavoriteWithListing[]> {
   const favorites = await prisma.userFavoriteListing.findMany({
     where: { userProfileId },
     include: { listing: { include: { address: true } } },
@@ -30,7 +35,7 @@ export async function getListingsFromFavorites(
     const newListing = {
       ...listing,
       currentPrice: listing.currentPrice?.toNumber(),
-      sizeSQM: listing.currentPrice?.toNumber(),
+      sizeSQM: listing.sizeSQM.toNumber(),
       bathrooms: listing.bathrooms.toNumber(),
     }
     return {
