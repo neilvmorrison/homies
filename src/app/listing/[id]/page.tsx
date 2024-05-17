@@ -7,8 +7,16 @@ import {
   CardHeader,
 } from '@/components/ui/card'
 import { AvatarImage, Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { fetchListingById } from '@/lib/listings/detail'
+import {
+  fetchLandlordPropertyCount,
+  fetchListingById,
+} from '@/lib/listings/detail'
 import { formatInitials } from '../../../lib/formatters'
+import ProfileCard from '@/components/ProfileCard'
+import UserTile from '@/components/UserTile'
+import RatingStar from '@/components/RatingStar'
+import { Icons } from '@/components/ui/icons'
+import Link from 'next/link'
 
 export default async function ListingDetail({
   params: { id },
@@ -17,6 +25,8 @@ export default async function ListingDetail({
 }) {
   const listing = await fetchListingById(id)
   const landlord = listing.owner
+  const propertyCount = await fetchLandlordPropertyCount(landlord.id)
+  console.log(landlord)
   return (
     <main className="min-h-[calc(100vh-60px)] mt-12 mx-24">
       <div className="flex gap-4 mb-4">
@@ -56,28 +66,31 @@ export default async function ListingDetail({
         <div className="w-full h-[2000px] py-10">
           <h1 className="text-4xl font-bold">{listing?.title}</h1>
           <p className="text-md mb-10">{listing?.description}</p>
-          <div className="flex flex-row gap-4 items-center">
-            <Avatar>
-              <AvatarImage
-                src={landlord.avatar}
-                alt={`${landlord.givenName}`}
-              />
-              <AvatarFallback>
-                {formatInitials([
-                  landlord.givenName,
-                  landlord.middleName,
-                  landlord.familyName,
-                ])}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-bold text-md">
-                {landlord.givenName} {landlord.familyName}
-              </p>
-              <p className="text-sm flex items-center text-slate-500">
-                Landlord
-              </p>
-            </div>
+          <div className="">
+            <h2 className="mb-4 font-medium text-slate-600">
+              This property is administered by
+            </h2>
+            <UserTile
+              src={landlord.avatar}
+              name={[landlord.givenName, landlord.familyName]}
+              subtitle="Landlord/Owner"
+              className="mb-2"
+            />
+            <ul className="flex flex-col gap-2 mt-4 text-slate-500 text-sm">
+              <li>
+                <RatingStar
+                  rating={landlord.overallRating}
+                  userName={landlord.givenName}
+                />
+              </li>
+              <li className="flex items-center gap-2">
+                <Icons.propertyCount className="stroke-slate-400" />
+                {landlord.givenName} manages
+                <Link href={'/'} className="hover:underline">
+                  {propertyCount} properties
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

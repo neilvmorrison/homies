@@ -9,3 +9,9 @@ export async function fetchListingById(
     include: { owner: true },
   })
 }
+
+export async function fetchLandlordPropertyCount(
+  lanlordProfileId: string
+): Promise<any> {
+  return prisma.listing.count({ where: { owner: { id: lanlordProfileId } } })
+}

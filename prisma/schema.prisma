@@ -55,15 +55,16 @@ model UserProfile {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  userSub     String
-  email       String     @unique
-  givenName   String
-  middleName  String?
-  familyName  String
-  dateOfBirth DateTime?
-  avatar      String?
-  documents   String[]
-  role        USER_ROLES
+  userSub       String
+  email         String     @unique
+  givenName     String
+  middleName    String?
+  familyName    String
+  dateOfBirth   DateTime?
+  avatar        String?
+  documents     String[]
+  role          USER_ROLES
+  overallRating Float?
 
   listingsOwned        Listing[]
   applications         PropertyApplication[]
@@ -75,6 +76,8 @@ model UserProfile {
   renterMessageThreads MessageThread[]       @relation("RenterMessages")
   userMessage          UserMessage[]
   favorites            UserFavoriteListing[]
+  userSharedListings   UserSharedListing[]   @relation("UserSharedListing")
+  userTargetListings   UserSharedListing[]   @relation("UserTargetListing")
 
   @@map("user-profiles")
 }
@@ -125,6 +128,7 @@ model Listing {
   reviews             ListingReview[]
   userPaymentRecords  UserPaymentRecord[]
   userFavorites       UserFavoriteListing[]
+  userSharedListings  UserSharedListing[]
 
   @@map("listings")
 }
@@ -210,6 +214,23 @@ model ListingReview {
 
   @@id([authorId, listingId])
   @@map("listing-reviews")
+}
+
+model UserSharedListing {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userProfile         UserProfile @relation("UserSharedListing", fields: [userProfileId], references: [id])
+  userProfileId       String
+  targetUserProfile   UserProfile @relation("UserTargetListing", fields: [targetUserProfileId], references: [id])
+  targetUserProfileId String
+  listing             Listing     @relation(fields: [listingId], references: [id])
+  listingId           String
+  note                String?
+
+  @@id([userProfileId, targetUserProfileId, listingId])
+  @@map("user-shared-listings")
 }
 
 model UserReview {

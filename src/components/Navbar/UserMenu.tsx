@@ -1,10 +1,6 @@
-import Link from "next/link";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../ui/avatar"
-import { Button } from "../ui/button"
+import Link from 'next/link'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Button } from '../ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +10,12 @@ import {
   DropdownMenuSeparator,
   // DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
-import { getUserProfile } from "@/lib/profiles";
-import { USER_ROLES } from "@prisma/client";
-import { APPNAME } from "@/lib/consts";
+} from '../ui/dropdown-menu'
+import { getUserProfile } from '@/lib/profiles'
+import { USER_ROLES } from '@prisma/client'
+import { APPNAME } from '@/lib/consts'
+import { signOut } from './actions'
+import LogoutButton from './LogoutButton'
 
 const unauthenticatedItems = [
   {
@@ -28,7 +26,7 @@ const unauthenticatedItems = [
     text: 'Sign up',
     href: '/signup',
   },
-];
+]
 
 const tenantMenuItems = [
   {
@@ -47,7 +45,7 @@ const tenantMenuItems = [
     text: 'Applications',
     href: '/applications',
   },
-];
+]
 
 const landlordMenuItems = [
   {
@@ -70,7 +68,7 @@ const landlordMenuItems = [
     text: 'Management',
     href: '/management',
   },
-];
+]
 
 function UnauthMenu() {
   return (
@@ -84,9 +82,7 @@ function UnauthMenu() {
       ))}
       <DropdownMenuSeparator />
       <Link href="/about">
-        <DropdownMenuItem className="cursor-pointer">
-          About
-        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">About</DropdownMenuItem>
       </Link>
       <Link href="/policies">
         <DropdownMenuItem className="cursor-pointer">
@@ -98,15 +94,23 @@ function UnauthMenu() {
 }
 
 export default async function UserNav() {
-  const userProfile = await getUserProfile();
-  const authLinks = userProfile?.role === USER_ROLES.TENANT ? tenantMenuItems : landlordMenuItems;
+  const userProfile = await getUserProfile()
+  const authLinks =
+    userProfile?.role === USER_ROLES.TENANT
+      ? tenantMenuItems
+      : landlordMenuItems
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-            <AvatarFallback>{!userProfile ? '?' : `${userProfile?.givenName[0]}${userProfile?.familyName[0]}`}</AvatarFallback>
+            <AvatarFallback>
+              {!userProfile
+                ? '?'
+                : `${userProfile?.givenName[0]}${userProfile?.familyName[0]}`}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -116,7 +120,9 @@ export default async function UserNav() {
           <>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{userProfile.givenName} {userProfile.familyName}</p>
+                <p className="text-sm font-medium leading-none">
+                  {userProfile.givenName} {userProfile.familyName}
+                </p>
                 <p className="text-xs leading-none text-muted-foreground">
                   {userProfile?.email}
                 </p>
@@ -127,9 +133,7 @@ export default async function UserNav() {
               {authLinks.map((link) => {
                 return (
                   <Link key={link.href} href={link.href}>
-                    <DropdownMenuItem>
-                      {link.text}
-                    </DropdownMenuItem>
+                    <DropdownMenuItem>{link.text}</DropdownMenuItem>
                   </Link>
                 )
               })}
@@ -137,20 +141,14 @@ export default async function UserNav() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <Link href="/get-started">
-                <DropdownMenuItem>
-                  I want to list my Property
-                </DropdownMenuItem>
+                <DropdownMenuItem>I want to list my Property</DropdownMenuItem>
               </Link>
               <Link href="/learn-more">
-                <DropdownMenuItem>
-                  What is {APPNAME}?
-                </DropdownMenuItem>
+                <DropdownMenuItem>What is {APPNAME}?</DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuItem>
-              <Button variant="destructive" className="w-full">
-                Log out
-              </Button>
+              <LogoutButton handleClick={signOut} />
             </DropdownMenuItem>
           </>
         )}
