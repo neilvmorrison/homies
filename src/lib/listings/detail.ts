@@ -15,3 +15,16 @@ export async function fetchLandlordPropertyCount(
 ): Promise<any> {
   return prisma.listing.count({ where: { owner: { id: lanlordProfileId } } })
 }
+
+export async function aggregateOwnerListings(ownerId: string): Promise<any> {
+  return prisma.listing.aggregate({
+    where: {
+      ownerId,
+    },
+    _avg: {
+      currentPrice: true,
+      overallRating: true,
+    },
+    _count: true,
+  })
+}

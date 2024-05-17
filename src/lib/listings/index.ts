@@ -58,21 +58,19 @@ export async function getListingsByOwnerId(
   ownerId: string
 ): Promise<SListingWithAddress[]> {
   const listings = await prisma.listing.findMany({
-    where: { owner: { id: ownerId } },
-    include: { address: true },
+    where: { ownerId },
+    include: {
+      address: {
+        select: {
+          city: true,
+          civicNumber: true,
+          country: true,
+          postalCode: true,
+          streetName: true,
+        },
+      },
+    },
   })
   const serialized = serializeListings<ListingWithAddress>(listings)
   return serialized
-}
-
-export type AggregatedListingStats = {
-  avg: any
-}
-export async function aggregateOwnerListingStats(
-  ownerId: string
-): Promise<any> {
-  return prisma.listing.aggregate({
-    avg: { overallRating: true },
-    count: true,
-  })
 }

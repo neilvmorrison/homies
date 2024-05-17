@@ -212,4 +212,142 @@ export const Icons = {
       <path d="M12 7a5 5 0 1 1 -4.995 5.217l-.005 -.217l.005 -.217a5 5 0 0 1 4.995 -4.783z" />
     </svg>
   ),
+  building: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-building"
+      {...props}
+    >
+      <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
+      <path d="M9 22v-4h6v4" />
+      <path d="M8 6h.01" />
+      <path d="M16 6h.01" />
+      <path d="M12 6h.01" />
+      <path d="M12 10h.01" />
+      <path d="M12 14h.01" />
+      <path d="M16 10h.01" />
+      <path d="M16 14h.01" />
+      <path d="M8 10h.01" />
+      <path d="M8 14h.01" />
+    </svg>
+  ),
+  bathrooms: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-building"
+      {...props}
+    >
+      <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
+      <path d="M9 22v-4h6v4" />
+      <path d="M8 6h.01" />
+      <path d="M16 6h.01" />
+      <path d="M12 6h.01" />
+      <path d="M12 10h.01" />
+      <path d="M12 14h.01" />
+      <path d="M16 10h.01" />
+      <path d="M16 14h.01" />
+      <path d="M8 10h.01" />
+      <path d="M8 14h.01" />
+    </svg>
+  ),
+  bedroom: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-building"
+      {...props}
+    >
+      <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
+      <path d="M9 22v-4h6v4" />
+      <path d="M8 6h.01" />
+      <path d="M16 6h.01" />
+      <path d="M12 6h.01" />
+      <path d="M12 10h.01" />
+      <path d="M12 14h.01" />
+      <path d="M16 10h.01" />
+      <path d="M16 14h.01" />
+      <path d="M8 10h.01" />
+      <path d="M8 14h.01" />
+    </svg>
+  ),
+  measure: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-ruler"
+      {...props}
+    >
+      <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z" />
+      <path d="m14.5 12.5 2-2" />
+      <path d="m11.5 9.5 2-2" />
+      <path d="m8.5 6.5 2-2" />
+      <path d="m17.5 15.5 2-2" />
+    </svg>
+  ),
+  dollar: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-circle-dollar-sign"
+      {...props}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+      <path d="M12 18V6" />
+    </svg>
+  ),
+  ratingStartLg: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-star"
+      {...props}
+    >
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  ),
 }

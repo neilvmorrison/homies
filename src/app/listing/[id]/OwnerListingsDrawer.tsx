@@ -22,6 +22,7 @@ import UserTile from '@/components/UserTile'
 import { Icons } from '@/components/ui/icons'
 import RatingStar from '@/components/RatingStar'
 import ListingCard from '@/components/ListingCard'
+import { aggregateOwnerListings } from '@/lib/listings/detail'
 
 interface IOwnerListingsDrawer {
   triggerText: ReactNode | ReactNode[]
@@ -37,9 +38,10 @@ export default async function OwnerListingsDrawer({
   const listings = await getListingsByOwnerId(ownerId)
   const owner = await getUserProfileById(ownerId)
   const authUser = await getAuthenticatedUserProfile()
-  if (!owner || !listings.length || !authUser) return null
+  if (!owner || !listings.length || !authUser || !currentListing) return null
   const { nameString, initials } = formatName(owner.givenName, owner.familyName)
   const { addressString } = formatListingAddress(currentListing.address)
+  const ownerStats = await aggregateOwnerListings(owner.id)
 
   return (
     <Drawer>
@@ -74,6 +76,29 @@ export default async function OwnerListingsDrawer({
                   />
                 </div>
               </UserTile>
+              <div className="my-8 flex flex-col gap-3">
+                <div>
+                  <div>Properties Managed</div>
+                  <div className="text-xl flex items-center gap-2 font-bold">
+                    <Icons.building className="w-4 h-4" />
+                    {ownerStats._count}
+                  </div>
+                </div>
+                <div>
+                  <div>Average Rent</div>
+                  <div className="text-xl flex items-center gap-2 font-bold">
+                    <Icons.building className="w-4 h-4" />
+                    {ownerStats._avg.currentPrice.toFixed(2)}
+                  </div>
+                </div>
+                <div>
+                  <div>Average Rating</div>
+                  <div className="text-xl flex items-center gap-2 font-bold">
+                    <Icons.building className="w-4 h-4" />
+                    {ownerStats._avg.overallRatin}
+                  </div>
+                </div>
+              </div>
             </DrawerDescription>
           </DrawerHeader>
           <div className="flex items-center gap-4 overflow-x-scroll p-3">
