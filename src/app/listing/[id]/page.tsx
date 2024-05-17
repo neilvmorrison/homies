@@ -3,22 +3,19 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
 } from '@/components/ui/card'
-import { AvatarImage, Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   fetchLandlordPropertyCount,
   fetchListingById,
 } from '@/lib/listings/detail'
-import { formatInitials, formatName } from '../../../lib/formatters'
-import ProfileCard from '@/components/ProfileCard'
+import { formatName } from '../../../lib/formatters'
 import UserTile from '@/components/UserTile'
 import RatingStar from '@/components/RatingStar'
 import { Icons } from '@/components/ui/icons'
-import Link from 'next/link'
 import OwnerListingsDrawer from './OwnerListingsDrawer'
-import { SListingWithAddress } from '@/lib/listings'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import Image from 'next/image'
 
 export default async function ListingDetail({
   params: { id },
@@ -35,12 +32,27 @@ export default async function ListingDetail({
   return (
     <main className="min-h-[calc(100vh-60px)] mt-12 mx-24">
       <div className="flex gap-4 mb-4">
-        <div className="h-[400px] w-full bg-slate-200 rounded"></div>
-        <div className="h-[400px] w-full grid grid-cols-2 grid-rows-2 gap-4">
-          <div className="bg-slate-200 rounded" />
-          <div className="bg-slate-200 rounded" />
-          <div className="bg-slate-200 rounded" />
-          <div className="bg-slate-200 rounded" />
+        <div className="h-[400px] w-full rounded relative">
+          <Image
+            src={listing?.thumbnail || ''}
+            alt={listing?.title || ''}
+            objectFit="cover"
+            fill
+            className="absolute rounded"
+          />
+        </div>
+        <div className="w-full grid grid-cols-2 grid-rows-2 gap-4">
+          {listing?.photoUrls.map((url) => (
+            <div className="relative" key={url}>
+              <Image
+                src={url}
+                alt={listing?.title || ''}
+                objectFit="cover"
+                fill
+                className="absolute rounded"
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div className="flex gap-4 mb-4 max-w-[1280px]">

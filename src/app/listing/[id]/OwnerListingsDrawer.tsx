@@ -30,6 +30,26 @@ interface IOwnerListingsDrawer {
   currentListing: SListingWithAddress
 }
 
+function OwnerStat({
+  label,
+  icon: Icon,
+  value,
+}: {
+  label: string
+  value: string | number
+  icon: any
+}) {
+  return (
+    <div>
+      <p className="text-md font-medium mb-1">{label}</p>
+      <div className="flex gap-2">
+        <Icon className="h-10 w-10" />
+        <p className="text-3xl font-black">{value}</p>
+      </div>
+    </div>
+  )
+}
+
 export default async function OwnerListingsDrawer({
   triggerText,
   ownerId,
@@ -51,8 +71,8 @@ export default async function OwnerListingsDrawer({
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full flex min-h-[45vh] items-start">
-          <DrawerHeader className="text-left min-w-[400px]">
+        <div className="mx-auto w-full grid grid-cols-3 items-start gap-4">
+          <div className="p-6 col-span-1 h-full flex flex-col gap-3">
             <DrawerTitle className="mb-4">
               {owner.givenName}&apos;s Properties
             </DrawerTitle>
@@ -76,32 +96,29 @@ export default async function OwnerListingsDrawer({
                   />
                 </div>
               </UserTile>
-              <div className="my-8 flex flex-col gap-3">
-                <div>
-                  <div>Properties Managed</div>
-                  <div className="text-xl flex items-center gap-2 font-bold">
-                    <Icons.building className="w-4 h-4" />
-                    {ownerStats._count}
-                  </div>
-                </div>
-                <div>
-                  <div>Average Rent</div>
-                  <div className="text-xl flex items-center gap-2 font-bold">
-                    <Icons.building className="w-4 h-4" />
-                    {ownerStats._avg.currentPrice.toFixed(2)}
-                  </div>
-                </div>
-                <div>
-                  <div>Average Rating</div>
-                  <div className="text-xl flex items-center gap-2 font-bold">
-                    <Icons.building className="w-4 h-4" />
-                    {ownerStats._avg.overallRatin}
-                  </div>
-                </div>
-              </div>
             </DrawerDescription>
-          </DrawerHeader>
-          <div className="flex items-center gap-4 overflow-x-scroll p-3">
+            <div className="mt-6 h-full flex flex-col justify-between">
+              <div className="flex flex-col gap-4 pl-4">
+                <OwnerStat
+                  label="Properties Managed"
+                  value={ownerStats._count}
+                  icon={Icons.building}
+                />
+                <OwnerStat
+                  label="Average Rent"
+                  value={ownerStats._avg.currentPrice.toFixed(2)}
+                  icon={Icons.dollar}
+                />
+                <OwnerStat
+                  label="Average Rating"
+                  value={ownerStats._avg.overallRating.toFixed(2)}
+                  icon={Icons.ratingStartLg}
+                />
+              </div>
+              <Button className="w-full">Message {owner.givenName}</Button>
+            </div>
+          </div>
+          <div className="col-span-2 flex gap-4 overflow-x-scroll pb-4">
             {listings.map((listing) => (
               <ListingCard
                 key={listing.id}

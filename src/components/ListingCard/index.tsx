@@ -12,6 +12,8 @@ import { SListingWithAddress } from '@/lib/listings'
 import ShareListing from './ShareListing'
 import { Badge } from '../ui/badge'
 import { formatListingStatusText } from '@/lib/formatters'
+import { cn } from '@/lib/utils'
+import { LISTING_STATUS } from '@prisma/client'
 
 interface IListingCardProps {
   listing: SListingWithAddress
@@ -25,11 +27,21 @@ async function ListingCard({
   userFavorites,
 }: IListingCardProps) {
   const isFavorite = userFavorites?.some((id) => listing.id === id)
+  const listingStatus = formatListingStatusText(listing.status)
   return (
     <Card key={listing.id} className="min-w-[320px]">
       <AspectRatio className="mb-3 relative">
-        <Badge variant={'default'} className="z-10 absolute top-4 right-4">
-          {formatListingStatusText(listing.status)}
+        <Badge
+          variant={'default'}
+          className={cn(
+            'z-10 absolute top-4 right-4',
+            listing.status === LISTING_STATUS.PENDING && 'bg-yellow-500',
+            listing.status === LISTING_STATUS.UPCOMING && 'bg-green-500',
+            listing.status === LISTING_STATUS.ARCHIVED && 'bg-gray-300',
+            listing.status === LISTING_STATUS.LEASED && 'bg-gray-300'
+          )}
+        >
+          {listingStatus}
         </Badge>
         <Image
           alt={`${listing.title} image`}
