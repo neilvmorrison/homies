@@ -2,7 +2,7 @@ import ListingCard from '@/components/ListingCard'
 import MainPageFilters from '@/components/MainPageFilters'
 import { LISTING_STATUS } from '@prisma/client'
 import { SListingWithAddress } from '@/lib/listings'
-import { getUserProfile } from '@/lib/profiles'
+import { getAuthenticatedUserProfile } from '@/lib/profiles'
 import { listUserFavorites } from '@/lib/listings/favorites'
 import { fetchFilteredListings } from './actions'
 
@@ -14,7 +14,7 @@ export default async function Home({
   const listings = await fetchFilteredListings({
     status: (searchParams.status as LISTING_STATUS) || LISTING_STATUS.IMMEDIATE,
   })
-  const profile = await getUserProfile()
+  const profile = await getAuthenticatedUserProfile()
   const userFavorites = profile ? await listUserFavorites(profile.id) : []
 
   const f_listings = userFavorites.map((l) => l.listingId)

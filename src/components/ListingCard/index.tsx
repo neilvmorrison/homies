@@ -26,7 +26,7 @@ async function ListingCard({
 }: IListingCardProps) {
   const isFavorite = userFavorites?.some((id) => listing.id === id)
   return (
-    <Card key={listing.id}>
+    <Card key={listing.id} className="min-w-[320px]">
       <AspectRatio className="mb-3 relative">
         <Badge variant={'default'} className="z-10 absolute top-4 right-4">
           {formatListingStatusText(listing.status)}

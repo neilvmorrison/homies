@@ -11,12 +11,14 @@ import {
   fetchLandlordPropertyCount,
   fetchListingById,
 } from '@/lib/listings/detail'
-import { formatInitials } from '../../../lib/formatters'
+import { formatInitials, formatName } from '../../../lib/formatters'
 import ProfileCard from '@/components/ProfileCard'
 import UserTile from '@/components/UserTile'
 import RatingStar from '@/components/RatingStar'
 import { Icons } from '@/components/ui/icons'
 import Link from 'next/link'
+import OwnerListingsDrawer from './OwnerListingsDrawer'
+import { SListingWithAddress } from '@/lib/listings'
 
 export default async function ListingDetail({
   params: { id },
@@ -25,8 +27,11 @@ export default async function ListingDetail({
 }) {
   const listing = await fetchListingById(id)
   const landlord = listing.owner
+  const { nameString, initials } = formatName(
+    landlord.givenName,
+    landlord.familyName
+  )
   const propertyCount = await fetchLandlordPropertyCount(landlord.id)
-  console.log(landlord)
   return (
     <main className="min-h-[calc(100vh-60px)] mt-12 mx-24">
       <div className="flex gap-4 mb-4">
@@ -72,7 +77,8 @@ export default async function ListingDetail({
             </h2>
             <UserTile
               src={landlord.avatar}
-              name={[landlord.givenName, landlord.familyName]}
+              name={nameString}
+              initials={initials}
               subtitle="Landlord/Owner"
               className="mb-2"
             />
@@ -86,9 +92,11 @@ export default async function ListingDetail({
               <li className="flex items-center gap-2">
                 <Icons.propertyCount className="stroke-slate-400" />
                 {landlord.givenName} manages
-                <Link href={'/'} className="hover:underline">
-                  {propertyCount} properties
-                </Link>
+                <OwnerListingsDrawer
+                  triggerText={`${propertyCount} properties`}
+                  ownerId={landlord.id}
+                  currentListing={listing}
+                />
               </li>
             </ul>
           </div>

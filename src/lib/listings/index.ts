@@ -64,3 +64,15 @@ export async function getListingsByOwnerId(
   const serialized = serializeListings<ListingWithAddress>(listings)
   return serialized
 }
+
+export type AggregatedListingStats = {
+  avg: any
+}
+export async function aggregateOwnerListingStats(
+  ownerId: string
+): Promise<any> {
+  return prisma.listing.aggregate({
+    avg: { overallRating: true },
+    count: true,
+  })
+}

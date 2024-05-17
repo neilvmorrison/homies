@@ -4,7 +4,7 @@ export default function RatingStar({
   rating,
   userName,
 }: {
-  rating: number
+  rating: number | null
   userName?: string
 }) {
   console.log(rating)

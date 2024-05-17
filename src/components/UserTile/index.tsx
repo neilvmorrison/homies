@@ -1,32 +1,34 @@
-import { formatInitials } from '@/lib/formatters'
 import { AvatarImage, Avatar, AvatarFallback } from '../ui/avatar'
 import { cn } from '@/lib/utils'
+import { DividerHorizontalIcon } from '@radix-ui/react-icons'
+import { ReactNode } from 'react'
 
 export interface IUserTile {
   src?: string
-  name: string[]
+  name: string
+  initials: string
   subtitle?: string
   className?: string
+  children?: ReactNode
 }
 
 export default function UserTile({
   src,
   name,
+  initials,
   subtitle,
   className,
+  children,
 }: IUserTile) {
-  const nameString = name.reduce(
-    (acc: string, next: string) => (acc += ` ${next}`),
-    ''
-  )
   return (
-    <div className={cn('flex gap-2 flex-row items-center', className)}>
+    <div className={cn('flex gap-2 flex-row items-start', className)}>
       <Avatar>
-        <AvatarImage src={src} alt={nameString} />
-        <AvatarFallback>{formatInitials(name)}</AvatarFallback>
+        <AvatarImage src={src} alt={name} />
+        <AvatarFallback>{initials}</AvatarFallback>
       </Avatar>
       <div>
-        <p className="text-md font-bold">{nameString}</p>
+        <p className="text-md font-bold">{name}</p>
+        {children && <div className="text-sm text-slate-600">{children}</div>}
         {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
       </div>
     </div>

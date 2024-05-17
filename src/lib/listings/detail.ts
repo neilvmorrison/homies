@@ -6,7 +6,7 @@ export async function fetchListingById(
 ): Promise<Listing | null> {
   return prisma.listing.findFirst({
     where: { id: listingId },
-    include: { owner: true },
+    include: { owner: true, address: true },
   })
 }
 

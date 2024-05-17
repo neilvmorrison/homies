@@ -2,7 +2,7 @@ import {
   UserFavoriteWithListing,
   getListingsFromFavorites,
 } from '@/lib/listings/favorites'
-import { getUserProfile } from '@/lib/profiles'
+import { getAuthenticatedUserProfile } from '@/lib/profiles'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ListingCard from '@/components/ListingCard'
@@ -52,7 +52,7 @@ export default async function Favorites({
 }: {
   searchParams: ReadonlyURLSearchParams
 }) {
-  const profile = await getUserProfile()
+  const profile = await getAuthenticatedUserProfile()
   if (!profile) {
     return redirect('/login')
   }

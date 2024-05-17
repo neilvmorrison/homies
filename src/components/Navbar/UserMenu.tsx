@@ -11,7 +11,7 @@ import {
   // DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import { getUserProfile } from '@/lib/profiles'
+import { getAuthenticatedUserProfile } from '@/lib/profiles'
 import { USER_ROLES } from '@prisma/client'
 import { APPNAME } from '@/lib/consts'
 import { signOut } from './actions'
@@ -94,7 +94,7 @@ function UnauthMenu() {
 }
 
 export default async function UserNav() {
-  const userProfile = await getUserProfile()
+  const userProfile = await getAuthenticatedUserProfile()
   const authLinks =
     userProfile?.role === USER_ROLES.TENANT
       ? tenantMenuItems

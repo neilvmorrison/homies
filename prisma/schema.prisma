@@ -108,8 +108,8 @@ model Listing {
   status          LISTING_STATUS @default(IMMEDIATE)
   thumbnail       String
   photoUrls       String[]
-  owner           UserProfile    @relation(fields: [userProfileId], references: [id])
-  userProfileId   String
+  owner           UserProfile    @relation(fields: [ownerId], references: [id])
+  ownerId         String
   address         Address        @relation(fields: [addressId], references: [id])
   addressId       String
   currentPrice    Decimal?       @db.Decimal(8, 2)

@@ -1,4 +1,4 @@
-import { LISTING_STATUS } from '@prisma/client'
+import { Address, LISTING_STATUS } from '@prisma/client'
 import { ListingWithAddress } from './listings'
 
 export function formatListingStatusText(status: LISTING_STATUS) {
@@ -25,4 +25,41 @@ export function serializeListings<T extends ListingWithAddress>(listings: T[]) {
     sizeSQM: listing.sizeSQM?.toNumber(),
     bathrooms: listing.bathrooms?.toNumber(),
   }))
+}
+
+export function getNameStringFromNameArray(...args: string[]): string {
+  return args.reduce(
+    (accName: string, nextName: string) => (accName += ` ${nextName}`),
+    ''
+  )
+}
+
+export type FormattedUserName = {
+  nameString: string
+  initials: string
+}
+export function formatName(...args: string[]): FormattedUserName {
+  const initials = args.reduce(
+    (name: string, nextName: string) => (name += nextName[0]),
+    ''
+  )
+  const nameString = args.reduce(
+    (name: string, nextName: string) => (name += ` ${nextName}`),
+    ''
+  )
+  return {
+    initials,
+    nameString,
+  }
+}
+
+export type FormattedAddress = {
+  addressString: string
+}
+export function formatListingAddress(address: Address): FormattedAddress {
+  let addressString = `${address.civicNumber} ${address.streetName}, ${address.city}`
+
+  return {
+    addressString,
+  }
 }
