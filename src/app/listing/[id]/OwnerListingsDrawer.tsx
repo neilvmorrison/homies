@@ -23,6 +23,12 @@ import { Icons } from '@/components/ui/icons'
 import RatingStar from '@/components/RatingStar'
 import ListingCard from '@/components/ListingCard'
 import { aggregateOwnerListings } from '@/lib/listings/detail'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 interface IOwnerListingsDrawer {
   triggerText: ReactNode | ReactNode[]
@@ -34,15 +40,29 @@ function OwnerStat({
   label,
   icon: Icon,
   value,
+  tooltipContent,
 }: {
   label: string
   value: string | number
   icon: any
+  tooltipContent?: string
 }) {
   return (
     <div>
-      <p className="text-md font-medium mb-1">{label}</p>
-      <div className="flex gap-2">
+      <div className="text-md font-medium mb-1 flex items-center gap-1">
+        {label}
+        {tooltipContent && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Icons.information className="h-4 w-4 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{tooltipContent}</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </div>
+      <div className="flex gap-2 items-center">
         <Icon className="h-10 w-10" />
         <p className="text-3xl font-black">{value}</p>
       </div>
@@ -98,21 +118,24 @@ export default async function OwnerListingsDrawer({
               </UserTile>
             </DrawerDescription>
             <div className="mt-6 h-full flex flex-col justify-between">
-              <div className="flex flex-col gap-4 pl-4">
+              <div className="flex flex-col gap-8 pl-4">
                 <OwnerStat
                   label="Properties Managed"
                   value={ownerStats._count}
                   icon={Icons.building}
+                  tooltipContent="This user owns multiple listings"
                 />
                 <OwnerStat
                   label="Average Rent"
                   value={ownerStats._avg.currentPrice.toFixed(2)}
                   icon={Icons.dollar}
+                  tooltipContent="This user owns multiple listings"
                 />
                 <OwnerStat
                   label="Average Rating"
                   value={ownerStats._avg.overallRating.toFixed(2)}
                   icon={Icons.ratingStartLg}
+                  tooltipContent="This user owns multiple listings "
                 />
               </div>
               <Button className="w-full">Message {owner.givenName}</Button>
@@ -120,11 +143,9 @@ export default async function OwnerListingsDrawer({
           </div>
           <div className="col-span-2 flex gap-4 overflow-x-scroll pb-4">
             {listings.map((listing) => (
-              <ListingCard
-                key={listing.id}
-                listing={listing}
-                profileId={authUser.id}
-              />
+              <div className="basis-1/4" key={listing.id}>
+                <ListingCard listing={listing} profileId={authUser.id} />
+              </div>
             ))}
           </div>
         </div>

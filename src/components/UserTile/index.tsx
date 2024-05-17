@@ -28,8 +28,10 @@ export default function UserTile({
       </Avatar>
       <div>
         <p className="text-md font-bold">{name}</p>
-        {children && <div className="text-sm text-slate-600">{children}</div>}
         {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
+        {children && (
+          <div className="text-sm text-slate-600 mt-2">{children}</div>
+        )}
       </div>
     </div>
   )

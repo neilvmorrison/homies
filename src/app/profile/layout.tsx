@@ -1,3 +1,5 @@
+import RatingStar from '@/components/RatingStar'
+import UserTile from '@/components/UserTile'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -7,7 +9,7 @@ import {
   CardHeader,
 } from '@/components/ui/card'
 import { APPNAME } from '@/lib/consts'
-import { formatInitials } from '@/lib/formatters'
+import { formatInitials, formatName } from '@/lib/formatters'
 import { getAuthenticatedUserProfile } from '@/lib/profiles'
 import { createClient } from '@/utils/supabase/server'
 import { NextPage } from 'next'
@@ -20,58 +22,43 @@ export default async function ProfileLayout({
   children: ReactNode
 }) {
   const profile = await getAuthenticatedUserProfile()
+  if (!profile) return null
+  const { nameString, initials } = formatName(
+    profile?.givenName,
+    profile?.familyName
+  )
   return (
     <div className="mx-24 my-12">
-      <div className="flex items-start gap-4 mb-12">
-        <Avatar className="h-[48px] w-[48px]">
-          <AvatarImage
+      <div className="grid gap-[64px] mt-4 grid-cols-4">
+        <div className="col-span-1">
+          <UserTile
             src={profile?.avatar || ''}
-            alt={`${profile?.givenName} ${profile?.familyName}`}
+            name={nameString}
+            initials={initials}
+            subtitle={profile.email}
+            className="mb-8"
           />
-          <AvatarFallback>
-            {formatInitials([
-              profile?.givenName as string,
-              profile?.familyName as string,
-            ])}
-          </AvatarFallback>
-        </Avatar>
-        <div>
-          <h1 className="font-bold text-lg">
-            {profile?.givenName} {profile?.familyName}
-          </h1>
-          <h2 className="font-dimmed text-sm mb-2">{profile?.email}</h2>
-          <p className="text-sm font-medium">
-            <span className="text-yellow-400">&#9733;</span>4.75
+          <h2 className="font-bold text-lg mb-3">Edit your profile</h2>
+          <p className="mb-2">
+            This is what others will see when they interact with you on{' '}
+            {APPNAME}
           </p>
+          <nav className="flex flex-col gap-4 mt-5">
+            <Button variant="secondary" asChild>
+              <Link href={'/profile/personal-information'}>
+                Personal Information
+              </Link>
+            </Button>
+            <Button variant="secondary">Renter&apos;s Application</Button>
+            <Button variant="secondary" asChild>
+              <Link href={'/profile/preferences'}>Preferences</Link>
+            </Button>
+            <Button variant="secondary">Payment History</Button>
+            <Button variant="secondary">Notifications</Button>
+            <Button variant="secondary">Messages</Button>
+          </nav>
         </div>
-      </div>
-      <div className="flex gap-8">
-        <Card className="w-[280px]">
-          <CardHeader>
-            Edit your profile
-            <CardDescription>
-              This is what others will see when they interact with you on{' '}
-              {APPNAME}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <nav className="flex flex-col gap-4">
-              <Button variant="secondary" asChild>
-                <Link href={'/profile/personal-information'}>
-                  Personal Information
-                </Link>
-              </Button>
-              <Button variant="secondary">Renter&apos;s Application</Button>
-              <Button variant="secondary" asChild>
-                <Link href={'/profile/preferences'}>Preferences</Link>
-              </Button>
-              <Button variant="secondary">Payment History</Button>
-              <Button variant="secondary">Notifications</Button>
-              <Button variant="secondary">Messages</Button>
-            </nav>
-          </CardContent>
-        </Card>
-        <main className="mt-4">{children}</main>
+        <main className="mt-4 col-span-3">{children}</main>
       </div>
     </div>
   )

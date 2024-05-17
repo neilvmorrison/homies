@@ -14,7 +14,6 @@ import UserTile from '@/components/UserTile'
 import RatingStar from '@/components/RatingStar'
 import { Icons } from '@/components/ui/icons'
 import OwnerListingsDrawer from './OwnerListingsDrawer'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
 import Image from 'next/image'
 
 export default async function ListingDetail({
