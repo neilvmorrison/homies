@@ -3,21 +3,14 @@ import { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { SListingWithAddress, getListingsByOwnerId } from '@/lib/listings'
 import { getAuthenticatedUserProfile, getUserProfileById } from '@/lib/profiles'
-import {
-  formatListingAddress,
-  formatName,
-  getNameStringFromNameArray,
-} from '@/lib/formatters'
+import { formatListingAddress, formatName } from '@/lib/formatters'
 import UserTile from '@/components/UserTile'
 import { Icons } from '@/components/ui/icons'
 import RatingStar from '@/components/RatingStar'
@@ -26,9 +19,9 @@ import { aggregateOwnerListings } from '@/lib/listings/detail'
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { MessageUserButton } from '@/components/MessageUserButton'
 
 interface IOwnerListingsDrawer {
   triggerText: ReactNode | ReactNode[]
@@ -138,7 +131,10 @@ export default async function OwnerListingsDrawer({
                   tooltipContent="This user owns multiple listings "
                 />
               </div>
-              <Button className="w-full">Message {owner.givenName}</Button>
+              <MessageUserButton
+                buttonText={`Message ${owner.givenName}`}
+                userIds={[authUser.id, owner.id]}
+              />
             </div>
           </div>
           <div className="col-span-2 flex gap-4 overflow-x-scroll pb-4">

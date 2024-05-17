@@ -80,7 +80,7 @@ export default async function ListingDetail({
           </Card>
         </div>
         <div className="w-full h-[2000px] py-10">
-          <h1 className="text-4xl font-bold">{listing?.title}</h1>
+          <h1 className="text-4xl font-bold mb-2">{listing?.title}</h1>
           <p className="text-md mb-10">{listing?.description}</p>
           <div className="">
             <h2 className="mb-4 font-medium text-slate-600">

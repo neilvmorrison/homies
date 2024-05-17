@@ -66,18 +66,17 @@ model UserProfile {
   role          USER_ROLES
   overallRating Float?
 
-  listingsOwned        Listing[]
-  applications         PropertyApplication[]
-  listingReviews       ListingReview[]
-  authoredReviews      UserReview[]          @relation("AuthoredReviews")
-  subjectReviews       UserReview[]          @relation("SubjectReviews")
-  paymentHistory       UserPaymentRecord[]
-  ownerMessageThreads  MessageThread[]       @relation("OwnerMessages")
-  renterMessageThreads MessageThread[]       @relation("RenterMessages")
-  userMessage          UserMessage[]
-  favorites            UserFavoriteListing[]
-  userSharedListings   UserSharedListing[]   @relation("UserSharedListing")
-  userTargetListings   UserSharedListing[]   @relation("UserTargetListing")
+  listingsOwned      Listing[]
+  applications       PropertyApplication[]
+  listingReviews     ListingReview[]
+  authoredReviews    UserReview[]          @relation("AuthoredReviews")
+  subjectReviews     UserReview[]          @relation("SubjectReviews")
+  paymentHistory     UserPaymentRecord[]
+  messageThreads     MessageThread[]
+  userMessage        UserMessage[]
+  favorites          UserFavoriteListing[]
+  userSharedListings UserSharedListing[]   @relation("UserSharedListing")
+  userTargetListings UserSharedListing[]   @relation("UserTargetListing")
 
   @@map("user-profiles")
 }
@@ -271,15 +270,14 @@ model UserPaymentRecord {
 }
 
 model MessageThread {
-  // after user submits an application, a message thread for the listing appears
   id        String    @id @default(uuid())
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  owners      UserProfile[] @relation("OwnerMessages")
-  renters     UserProfile[] @relation("RenterMessages")
-  UserMessage UserMessage[]
+  participants UserProfile[]
+  userMessages UserMessage[]
+  name         String
 
   @@map("message-thread")
 }
