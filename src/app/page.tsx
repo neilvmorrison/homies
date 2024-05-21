@@ -20,7 +20,7 @@ export default async function Home({
   const f_listings = userFavorites.map((l) => l.listingId)
 
   return (
-    <main className="mx-24 my-12">
+    <main>
       <MainPageFilters />
       <section className="grid grid-cols-4 gap-6 mt-4">
         {listings.map((listing: SListingWithAddress) => (

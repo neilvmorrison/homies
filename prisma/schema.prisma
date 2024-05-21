@@ -78,6 +78,11 @@ model UserProfile {
   userSharedListings UserSharedListing[]   @relation("UserSharedListing")
   userTargetListings UserSharedListing[]   @relation("UserTargetListing")
 
+  leasesAsTenant   LeaseAgreement[] @relation("leases-as-tenant")
+  leasesAsLandlord LeaseAgreement[] @relation("leases-as-landlord")
+
+  leasePayments LeasePayments[]
+
   @@map("user-profiles")
 }
 
@@ -128,6 +133,7 @@ model Listing {
   userPaymentRecords  UserPaymentRecord[]
   userFavorites       UserFavoriteListing[]
   userSharedListings  UserSharedListing[]
+  leaseAgreements     LeaseAgreement[]
 
   @@map("listings")
 }
@@ -295,4 +301,31 @@ model UserMessage {
   messageThreadId String
 
   @@map("user-messages")
+}
+
+model LeaseAgreement {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  listing Listing @relation(fields: [listingId], references: [id])
+
+  termInMonths Int
+  leasors      UserProfile[] @relation("leases-as-tenant")
+  landlords    UserProfile[] @relation("leases-as-landlord")
+
+  noticePeriodInDays Int    @default(60)
+  listingId          String
+}
+
+model LeasePayments {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  amount  Decimal     @db.Decimal(8, 2)
+  payor   UserProfile @relation(references: [id], fields: [payorId])
+  payorId String
 }
