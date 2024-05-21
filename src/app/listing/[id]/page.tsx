@@ -3,7 +3,9 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
+  CardTitle,
 } from '@/components/ui/card'
 import {
   fetchLandlordPropertyCount,
@@ -15,6 +17,7 @@ import RatingStar from '@/components/RatingStar'
 import { Icons } from '@/components/ui/icons'
 import OwnerListingsDrawer from './OwnerListingsDrawer'
 import Image from 'next/image'
+import RatingReview from '@/components/RatingReview'
 
 export default async function ListingDetail({
   params: { id },
@@ -29,7 +32,7 @@ export default async function ListingDetail({
   )
   const propertyCount = await fetchLandlordPropertyCount(landlord.id)
   return (
-    <main className="min-h-[calc(100vh-60px)] mt-12 mx-24">
+    <main>
       <div className="flex gap-4 mb-4">
         <div className="h-[400px] w-full rounded relative">
           <Image
@@ -61,21 +64,24 @@ export default async function ListingDetail({
               <h2 className="text-4xl font-black">
                 $ {Number(listing?.currentPrice)}{' '}
               </h2>
+              <RatingReview rating={listing?.overallRating} reviewCount={1} />
             </CardHeader>
             <CardContent className="flex flex-col h-full gap-4">
-              <p>Some content</p>
+              <CardTitle>Listing Breakdown</CardTitle>
               <CardDescription>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-                eveniet, at consequatur molestiae rerum officiis velit quaerat
-                sunt alias, rem eius eos veniam praesentium suscipit autem
-                provident, laudantium voluptate assumenda.
+                <p>
+                  How this listing stacks up against your search preferences
+                </p>
               </CardDescription>
-              <Button variant="default" className="w-full">
-                Submit an Application
-              </Button>
-              <Button variant="ghost" className="w-full">
-                Schedule a Viewing
-              </Button>
+              {}
+              <CardFooter className="p-0 justify-self-end flex flex-col gap-2">
+                <Button variant="default" className="w-full">
+                  Submit an Application
+                </Button>
+                <Button variant="ghost" className="w-full">
+                  Schedule a Viewing
+                </Button>
+              </CardFooter>
             </CardContent>
           </Card>
         </div>
