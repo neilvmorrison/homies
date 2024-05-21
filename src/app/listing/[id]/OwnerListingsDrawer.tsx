@@ -134,6 +134,7 @@ export default async function OwnerListingsDrawer({
               <MessageUserButton
                 buttonText={`Message ${owner.givenName}`}
                 userIds={[authUser.id, owner.id]}
+                threadName={currentListing.title}
               />
             </div>
           </div>

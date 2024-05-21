@@ -63,3 +63,13 @@ export function formatListingAddress(address: Address): FormattedAddress {
     addressString,
   }
 }
+
+export function formatDate(date: Date, options = {}): string {
+  const defaultOptions: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+  return date.toLocaleDateString('en-CA', { ...defaultOptions, ...options })
+}
