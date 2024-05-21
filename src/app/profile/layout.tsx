@@ -28,7 +28,7 @@ export default async function ProfileLayout({
     profile?.familyName
   )
   return (
-    <div className="mx-24 my-12">
+    <div>
       <div className="grid gap-[64px] mt-4 grid-cols-4">
         <div className="col-span-1">
           <UserTile

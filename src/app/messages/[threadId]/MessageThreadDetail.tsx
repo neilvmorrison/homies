@@ -8,12 +8,10 @@ export default async function MessageThreadDetail({
   params: { threadId: string }
 }) {
   const thread = await getMessageThreadById(params.threadId)
-  console.log(thread)
   return (
     <div className="flex flex-col justify-between h-[calc(100vh-60px)]">
       <div className="flex text-white bg-slate-700 p-4 font-bold">
         {thread.name}
-        <Icons />
       </div>
       <ScrollArea className="flex-1 p-4">
         {/* {messages.map((message) => (

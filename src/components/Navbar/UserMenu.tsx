@@ -42,8 +42,12 @@ const tenantMenuItems = [
     href: '/favorites',
   },
   {
-    text: 'Applications',
+    text: 'Rental Applications',
     href: '/applications',
+  },
+  {
+    text: 'My Lease',
+    href: '/my-lease',
   },
 ]
 

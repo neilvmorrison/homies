@@ -23,7 +23,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <TooltipProvider>
           <NavBar />
-          <main className="min-h-[calc(100vh-88px)]">{children}</main>
+          <main className="min-h-[calc(100vh-88px)] px-8 py-8">{children}</main>
           <Footer />
         </TooltipProvider>
       </body>

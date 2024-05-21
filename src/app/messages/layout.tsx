@@ -59,8 +59,8 @@ async function MessageLayout({ children }: { children: ReactNode }) {
   const { messageThreads } = (await getThreadsByProfileId(authUser.id)) || {}
   if (!messageThreads?.length) return <h1>No threads yet!</h1>
   return (
-    <div className="flex h-[calc(100vh-60px)]">
-      <div className="w-1/3 bg-gray-200 p-4">
+    <div className="flex h-[calc(100vh-100px)]">
+      <div className="w-1/3  p-4">
         <div className="font-bold text-lg mb-4">Message Threads</div>
         {messageThreads.map((thread: MessageThread) => (
           <Link href={`/messages/${thread.id}`} key={thread.id}>
@@ -77,7 +77,9 @@ async function MessageLayout({ children }: { children: ReactNode }) {
           </Link>
         ))}
       </div>
-      <div className="flex-1 flex flex-col bg-gray-100">{children}</div>
+      <div className="flex-1 flex flex-col bg-gray-100 rounded-b-lg">
+        {children}
+      </div>
     </div>
   )
 }

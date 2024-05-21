@@ -1,7 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
-import { threadId } from 'worker_threads'
 
 export default function ChatWindow({ threadId }: { threadId: string }) {
   return (
