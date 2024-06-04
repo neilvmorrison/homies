@@ -102,6 +102,7 @@ model PropertyApplication {
 }
 
 model Listing {
+  // add an "availableStarting column to facilitate lookups"
   id        String    @id @default(uuid())
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

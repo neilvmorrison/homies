@@ -1,7 +1,7 @@
 export default function ProfileHome() {
   return (
     <div>
-      <h2>Profile Home</h2>
+      <h2>Your Profile</h2>
     </div>
   )
 }

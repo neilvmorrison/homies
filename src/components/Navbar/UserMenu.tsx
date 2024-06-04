@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  // DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { getAuthenticatedUserProfile } from '@/lib/profiles'
@@ -16,6 +15,7 @@ import { USER_ROLES } from '@prisma/client'
 import { APPNAME } from '@/lib/consts'
 import { signOut } from './actions'
 import LogoutButton from './LogoutButton'
+import { Icons } from '../ui/icons'
 
 const unauthenticatedItems = [
   {
@@ -61,16 +61,12 @@ const landlordMenuItems = [
     href: '/messages',
   },
   {
-    text: 'Listings',
-    href: '/listings',
-  },
-  {
     text: 'Applications',
     href: '/applications',
   },
   {
-    text: 'Management',
-    href: '/management',
+    text: 'Manage Listings',
+    href: '/listing-management',
   },
 ]
 
@@ -85,8 +81,11 @@ function UnauthMenu() {
         </Link>
       ))}
       <DropdownMenuSeparator />
-      <Link href="/about">
-        <DropdownMenuItem className="cursor-pointer">About</DropdownMenuItem>
+      <Link href="/learn-more">
+        <DropdownMenuItem>What is {APPNAME}?</DropdownMenuItem>
+      </Link>
+      <Link href="/get-started">
+        <DropdownMenuItem>I want to list my Property</DropdownMenuItem>
       </Link>
       <Link href="/policies">
         <DropdownMenuItem className="cursor-pointer">
@@ -111,9 +110,11 @@ export default async function UserNav() {
           <Avatar className="h-8 w-8">
             <AvatarImage src="/avatars/01.png" alt="@shadcn" />
             <AvatarFallback>
-              {!userProfile
-                ? '?'
-                : `${userProfile?.givenName[0]}${userProfile?.familyName[0]}`}
+              {!userProfile ? (
+                <Icons.user />
+              ) : (
+                `${userProfile?.givenName[0]}${userProfile?.familyName[0]}`
+              )}
             </AvatarFallback>
           </Avatar>
         </Button>

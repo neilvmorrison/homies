@@ -65,7 +65,7 @@ export default async function Favorites({
   // }
 
   return (
-    <main className="min-h-[calc(100vh-60px)] mt-12 mx-24">
+    <main>
       <h1 className="text-lg font-bold mb-4">Favorites</h1>
       <Tabs defaultValue="saved" className="">
         <div>

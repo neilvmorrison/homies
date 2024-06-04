@@ -1,6 +1,7 @@
 'use client'
 
 import RatingStar from '../RatingStar'
+import ReviewSheet from '../ReviewSheet'
 import { Button } from '../ui/button'
 
 function RatingReview({
@@ -14,9 +15,11 @@ function RatingReview({
     <div className="flex items-center gap-1">
       <RatingStar rating={rating || null} />
       based on{' '}
-      <Button variant="link" onClick={() => alert('clicked')} className="px-0">
-        {reviewCount} {reviewCount > 1 ? ' reviews' : ' review'}
-      </Button>
+      <ReviewSheet>
+        <Button variant="link" className="px-0">
+          {reviewCount} {reviewCount > 1 ? ' reviews' : ' review'}
+        </Button>
+      </ReviewSheet>
     </div>
   )
 }

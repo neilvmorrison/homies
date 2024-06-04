@@ -15,7 +15,7 @@ function AvatarGroup({ avatars }: { avatars: IAvatar[] }) {
       {avatars.map((avatar) => (
         <Tooltip key={avatar.src}>
           <TooltipTrigger>
-            <Avatar className="cursor-pointer">
+            <Avatar className="cursor-pointer text-black">
               <AvatarImage src={avatar.src || ''} alt={avatar.userName} />
               <AvatarFallback>{avatar.initials}</AvatarFallback>
             </Avatar>

@@ -16,7 +16,10 @@ function ChatMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuItem>Add Member</DropdownMenuItem>
+          <DropdownMenuItem className="flex items-center gap-2">
+            <Icons.userAdd />
+            Add Member
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Leave thread</DropdownMenuItem>

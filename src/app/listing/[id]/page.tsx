@@ -11,6 +11,15 @@ import {
   fetchLandlordPropertyCount,
   fetchListingById,
 } from '@/lib/listings/detail'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { formatName } from '../../../lib/formatters'
 import UserTile from '@/components/UserTile'
 import RatingStar from '@/components/RatingStar'
@@ -18,6 +27,9 @@ import { Icons } from '@/components/ui/icons'
 import OwnerListingsDrawer from './OwnerListingsDrawer'
 import Image from 'next/image'
 import RatingReview from '@/components/RatingReview'
+import { applyToListing } from './actions'
+import { getAuthenticatedUserProfile } from '@/lib/profiles'
+import SubmitApplication from './submit-application'
 
 export default async function ListingDetail({
   params: { id },
@@ -25,6 +37,9 @@ export default async function ListingDetail({
   params: { id: string }
 }) {
   const listing = await fetchListingById(id)
+  const authUser = await getAuthenticatedUserProfile()
+
+  if (!listing) return null
   const landlord = listing.owner
   const { nameString, initials } = formatName(
     landlord.givenName,
@@ -69,15 +84,13 @@ export default async function ListingDetail({
             <CardContent className="flex flex-col h-full gap-4">
               <CardTitle>Listing Breakdown</CardTitle>
               <CardDescription>
-                <p>
-                  How this listing stacks up against your search preferences
-                </p>
+                How this listing stacks up against your search preferences
               </CardDescription>
-              {}
               <CardFooter className="p-0 justify-self-end flex flex-col gap-2">
-                <Button variant="default" className="w-full">
-                  Submit an Application
-                </Button>
+                {/* <SubmitApplication
+                  listingId={listing.id}
+                  authenticatedUserId={authUser?.id || ''}
+                /> */}
                 <Button variant="ghost" className="w-full">
                   Schedule a Viewing
                 </Button>

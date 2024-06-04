@@ -22,7 +22,7 @@ export default async function ProfileLayout({
       <div className="grid gap-[64px] mt-4 grid-cols-4">
         <div className="col-span-1">
           <Button asChild variant="link">
-            <Link href="/profile">
+            <Link href="/profile" className="hover:no-underline text-black">
               <UserTile
                 src={profile?.avatar || ''}
                 name={nameString}
@@ -32,11 +32,6 @@ export default async function ProfileLayout({
               />
             </Link>
           </Button>
-          <h2 className="font-bold text-lg mb-3">Edit your profile</h2>
-          <p className="mb-2">
-            This is what others will see when they interact with you on{' '}
-            {APPNAME}
-          </p>
           <nav className="flex flex-col gap-4 mt-5">
             <Button variant="secondary" asChild>
               <Link href={'/profile/personal-information'}>
