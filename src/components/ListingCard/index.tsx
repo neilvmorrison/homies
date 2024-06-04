@@ -57,11 +57,13 @@ async function ListingCard({
           </h3>
           <div className="flex gap-2">
             <ShareListing listingId={listing.id} />
-            <LikeListing
-              listingId={listing.id}
-              userProfileId={profileId}
-              isFavorite={isFavorite}
-            />
+            {profileId && (
+              <LikeListing
+                listingId={listing.id}
+                userProfileId={profileId}
+                isFavorite={isFavorite}
+              />
+            )}
           </div>
         </div>
         <Link href={`/listing/${listing.id}`}>

@@ -11,10 +11,36 @@ import {
 import { Button } from '../ui/button'
 import { SListingWithAddress } from '@/lib/listings'
 import { UserProfile } from '@prisma/client'
+import Link from 'next/link'
 
 interface IListingCard {
   listing: SListingWithAddress
   authUser: UserProfile | null
+}
+
+function AuthenticatedCardContent({ listing, authUser }: IListingCard) {
+  return (
+    <>
+      <SubmitApplication listing={listing} authUserId={authUser?.id || ''} />
+      <Button variant="secondary" className="w-full">
+        Schedule a Viewing
+      </Button>
+    </>
+  )
+}
+function UnauthenticatedCardContent() {
+  return (
+    <div className="text-xs">
+      <Link href="/signup" className="text-blue-500 hover:underline">
+        Sign up
+      </Link>{' '}
+      or{' '}
+      <Link href="/login" className="text-blue-500 hover:underline">
+        log in
+      </Link>{' '}
+      to submit an application or schedule a viewing
+    </div>
+  )
 }
 
 function ListingDetailCard({ listing, authUser }: IListingCard) {
@@ -32,15 +58,11 @@ function ListingDetailCard({ listing, authUser }: IListingCard) {
           How this listing stacks up against your search preferences
         </CardDescription>
         <CardFooter className="p-0 justify-self-end flex flex-col gap-2">
-          {authUser && (
-            <SubmitApplication
-              listing={listing}
-              authUserId={authUser?.id || ''}
-            />
+          {authUser ? (
+            <AuthenticatedCardContent listing={listing} authUser={authUser} />
+          ) : (
+            <UnauthenticatedCardContent />
           )}
-          <Button variant="ghost" className="w-full">
-            Schedule a Viewing
-          </Button>
         </CardFooter>
       </CardContent>
     </Card>

@@ -5,21 +5,20 @@ import { getAuthenticatedUserProfile } from '@/lib/profiles'
 import { ScrollArea } from '../../components/ui/scroll-area'
 import { ReactNode } from 'react'
 import TabLink from '@/components/ui/tab-link'
+import { protectRoute } from '@/utils/protect-route'
 
 export default async function ListingManagementLayout({
   children,
 }: {
   children: ReactNode
 }) {
-  const authUser = await getAuthenticatedUserProfile()
-  if (!authUser) return null
+  const authUser = await protectRoute('/')
   const listings = await getListingsByOwnerId(authUser.id)
   return (
     <div>
       <div className="grid gap-[64px] mt-4 grid-cols-4 min-h-[100vh]">
         <div className="col-span-1 pr-4">
-          <h1>My Listings</h1>
-          <ScrollArea className="h-full mt-6">
+          <ScrollArea>
             <div className="flex flex-col gap-4">
               {listings.map((listing) => {
                 const { addressString } = formatListingAddress(listing.address)

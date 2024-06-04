@@ -1,35 +1,29 @@
 import UserTile from '@/components/UserTile'
+import { Badge } from '@/components/ui/badge'
 import { getApplicationsByUserId } from '@/lib/applications'
 import {
   formatApplicationStatusText,
   formatListingAddress,
 } from '@/lib/formatters'
 import { getAuthenticatedUserProfile } from '@/lib/profiles'
+import { cn } from '@/lib/utils'
+import { APPLICATION_STATUS } from '@prisma/client'
 import Link from 'next/link'
+import { ReactNode } from 'react'
 
-export default async function Applications() {
+export default async function Applications({
+  children,
+}: {
+  children: ReactNode
+}) {
   const authUser = await getAuthenticatedUserProfile()
   if (!authUser) return null
-  const applications = await getApplicationsByUserId(authUser?.id)
   return (
-    <div>
-      <h1 className="mb-4">Applications</h1>
-      {applications?.map((app) => {
-        const applicationStatus = formatApplicationStatusText(app.status)
-        const { addressString } = formatListingAddress(app.listing.address)
-        return (
-          <Link href={`/applications/${app.id}`} key={app.id}>
-            <UserTile
-              src={app.listing.thumbnail}
-              name={app.listing.title}
-              subtitle={addressString}
-              initials={app.listing.title[0]}
-            >
-              {applicationStatus}
-            </UserTile>
-          </Link>
-        )
-      })}
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 rounded">
+      <div>
+        <h1>Select an application</h1>
+        <p>See the details about your application</p>
+      </div>
     </div>
   )
 }

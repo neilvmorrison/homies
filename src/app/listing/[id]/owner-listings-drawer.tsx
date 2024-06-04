@@ -1,6 +1,4 @@
 import { ReactNode } from 'react'
-
-import { Button } from '@/components/ui/button'
 import {
   Drawer,
   DrawerContent,
@@ -22,6 +20,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { MessageUserButton } from '@/components/MessageUserButton'
+import { Button } from '@/components/ui/button'
 
 interface IOwnerListingsDrawer {
   triggerText: ReactNode | ReactNode[]
@@ -71,7 +70,7 @@ export default async function OwnerListingsDrawer({
   const listings = await getListingsByOwnerId(ownerId)
   const owner = await getUserProfileById(ownerId)
   const authUser = await getAuthenticatedUserProfile()
-  if (!owner || !listings.length || !authUser || !currentListing) return null
+  if (!owner || !listings.length || !currentListing) return null
   const { nameString, initials } = formatName(owner.givenName, owner.familyName)
   const { addressString } = formatListingAddress(currentListing.address)
   const ownerStats = await aggregateOwnerListings(owner.id)
@@ -129,17 +128,19 @@ export default async function OwnerListingsDrawer({
                   tooltipContent="This user owns multiple listings "
                 />
               </div>
-              <MessageUserButton
-                buttonText={`Message ${owner.givenName}`}
-                userIds={[authUser.id, owner.id]}
-                threadName={currentListing.title}
-              />
+              {authUser && (
+                <MessageUserButton
+                  buttonText={`Message ${owner.givenName}`}
+                  userIds={[authUser.id, owner.id]}
+                  threadName={currentListing.title}
+                />
+              )}
             </div>
           </div>
           <div className="col-span-2 flex gap-4 overflow-x-scroll pb-4">
             {listings.map((listing) => (
               <div className="basis-1/4" key={listing.id}>
-                <ListingCard listing={listing} profileId={authUser.id} />
+                <ListingCard listing={listing} profileId={''} />
               </div>
             ))}
           </div>
