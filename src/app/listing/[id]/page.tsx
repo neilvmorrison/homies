@@ -1,35 +1,15 @@
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import {
   fetchLandlordPropertyCount,
   fetchListingById,
 } from '@/lib/listings/detail'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import { formatName } from '../../../lib/formatters'
 import UserTile from '@/components/UserTile'
 import RatingStar from '@/components/RatingStar'
 import { Icons } from '@/components/ui/icons'
-import OwnerListingsDrawer from './OwnerListingsDrawer'
+import OwnerListingsDrawer from './owner-listings-drawer'
 import Image from 'next/image'
-import RatingReview from '@/components/RatingReview'
-import { applyToListing } from './actions'
 import { getAuthenticatedUserProfile } from '@/lib/profiles'
-import SubmitApplication from './submit-application'
+import ListingDetailCard from '@/components/ListingDetailCard'
 
 export default async function ListingDetail({
   params: { id },
@@ -74,29 +54,7 @@ export default async function ListingDetail({
       </div>
       <div className="flex gap-4 mb-4 max-w-[1280px]">
         <div className="w-[640px] relative">
-          <Card className="max-w-[400px] mt-10 min-h-[320px] sticky top-10">
-            <CardHeader>
-              <h2 className="text-4xl font-black">
-                $ {Number(listing?.currentPrice)}{' '}
-              </h2>
-              <RatingReview rating={listing?.overallRating} reviewCount={1} />
-            </CardHeader>
-            <CardContent className="flex flex-col h-full gap-4">
-              <CardTitle>Listing Breakdown</CardTitle>
-              <CardDescription>
-                How this listing stacks up against your search preferences
-              </CardDescription>
-              <CardFooter className="p-0 justify-self-end flex flex-col gap-2">
-                {/* <SubmitApplication
-                  listingId={listing.id}
-                  authenticatedUserId={authUser?.id || ''}
-                /> */}
-                <Button variant="ghost" className="w-full">
-                  Schedule a Viewing
-                </Button>
-              </CardFooter>
-            </CardContent>
-          </Card>
+          <ListingDetailCard listing={listing} authUser={authUser} />
         </div>
         <div className="w-full h-[2000px] py-10">
           <h1 className="text-4xl font-bold mb-2">{listing?.title}</h1>

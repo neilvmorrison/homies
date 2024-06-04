@@ -16,9 +16,7 @@ function RatingReview({
       <RatingStar rating={rating || null} />
       based on{' '}
       <ReviewSheet>
-        <Button variant="link" className="px-0">
-          {reviewCount} {reviewCount > 1 ? ' reviews' : ' review'}
-        </Button>
+        {reviewCount} {reviewCount > 1 ? ' reviews' : ' review'}
       </ReviewSheet>
     </div>
   )

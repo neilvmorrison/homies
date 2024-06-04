@@ -18,7 +18,9 @@ import { Button } from '../ui/button'
 export default function ReviewSheet({ children }: { children: ReactNode }) {
   return (
     <Sheet>
-      <SheetTrigger>{children}</SheetTrigger>
+      <SheetTrigger className="text-blue-500 hover:underline">
+        {children}
+      </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Reviews</SheetTitle>

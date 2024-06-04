@@ -1,4 +1,4 @@
-import { PropertyApplication } from '@prisma/client'
+import { PropertyApplication, UserProfile } from '@prisma/client'
 import prisma from '../../../prisma/prisma'
 
 export async function createApplication(
@@ -11,6 +11,21 @@ export async function createApplication(
       listingId,
       tenants: {
         connect: [...formattedTenants],
+      },
+    },
+  })
+}
+
+export async function getApplicationsByUserId(
+  userId: string
+): Promise<PropertyApplication[]> {
+  return prisma.propertyApplication.findMany({
+    where: { tenants: { some: { id: userId } } },
+    include: {
+      listing: {
+        include: {
+          address: true,
+        },
       },
     },
   })

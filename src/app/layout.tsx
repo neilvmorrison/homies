@@ -5,6 +5,7 @@ import NavBar from '@/components/Navbar'
 import { APPNAME } from '@/lib/consts'
 import Footer from '@/components/Footer'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,6 +26,7 @@ export default async function RootLayout({
           <NavBar />
           <main className="min-h-[calc(100vh-88px)] px-8 py-8">{children}</main>
           <Footer />
+          <Toaster />
         </TooltipProvider>
       </body>
     </html>

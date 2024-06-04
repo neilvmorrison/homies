@@ -78,10 +78,8 @@ export default async function OwnerListingsDrawer({
 
   return (
     <Drawer>
-      <DrawerTrigger asChild>
-        <Button variant="link" className="underline px-0 mx-0">
-          {triggerText}
-        </Button>
+      <DrawerTrigger className="text-blue-500 hover:underline">
+        {triggerText}
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full grid grid-cols-3 items-start gap-4">

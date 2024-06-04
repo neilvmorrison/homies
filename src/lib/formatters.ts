@@ -1,4 +1,4 @@
-import { Address, LISTING_STATUS } from '@prisma/client'
+import { APPLICATION_STATUS, Address, LISTING_STATUS } from '@prisma/client'
 import { ListingWithAddress } from './listings'
 
 export function formatListingStatusText(status: LISTING_STATUS) {
@@ -8,6 +8,18 @@ export function formatListingStatusText(status: LISTING_STATUS) {
     [LISTING_STATUS.IMMEDIATE]: 'Immediate',
     [LISTING_STATUS.LEASED]: 'Leased',
     [LISTING_STATUS.PENDING]: 'Offer Pending',
+  }
+  return filterNames[status]
+}
+
+export function formatApplicationStatusText(status: APPLICATION_STATUS) {
+  const filterNames = {
+    [APPLICATION_STATUS.PENDING]: 'Pending',
+    [APPLICATION_STATUS.ACCEPTED]: 'Accepted!',
+    [APPLICATION_STATUS.REJECTED]: 'Rejected',
+    [APPLICATION_STATUS.VIEWED]: 'Viewed',
+    [APPLICATION_STATUS.CONDITIONALLY_ACCEPTED]: 'Conditionally Accepted',
+    [APPLICATION_STATUS.NEEDS_INFORMATION]: 'Needs information',
   }
   return filterNames[status]
 }
