@@ -6,6 +6,7 @@ import { ScrollArea } from '../../components/ui/scroll-area'
 import { ReactNode } from 'react'
 import TabLink from '@/components/ui/tab-link'
 import { protectRoute } from '@/utils/protect-route'
+import Link from 'next/link'
 
 export default async function ListingManagementLayout({
   children,
@@ -18,6 +19,22 @@ export default async function ListingManagementLayout({
     <div>
       <div className="grid gap-[64px] mt-4 grid-cols-4 min-h-[100vh]">
         <div className="col-span-1 pr-4">
+          <Link
+            href="/listing-management"
+            className="text-3xl font-bold hover:bg-transparent"
+          >
+            Overview
+          </Link>
+          <div className="flex flex-col gap-2 my-4">
+            <Link href="/listing-management/applications">
+              Lease Applications
+            </Link>
+            <Link href="/listing-management/tasks">Maintenance</Link>
+            <Link href="/listing-management/payments">Payments</Link>
+            <Link href="/listing-management/active-leases">Active Leases</Link>
+          </div>
+          <div className="border-b w-full h-[1px] my-2" />
+          <h2 className="text-lg font-bold text-slate-500 mb-4">My Listings</h2>
           <ScrollArea>
             <div className="flex flex-col gap-4">
               {listings.map((listing) => {

@@ -50,4 +50,7 @@
 }
 
 @layer components {
+  a {
+    @apply font-medium hover:bg-slate-100 p-2 rounded;
+  }
 }

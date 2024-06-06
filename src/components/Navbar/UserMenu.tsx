@@ -62,7 +62,7 @@ const landlordMenuItems = [
   },
   {
     text: 'Applications',
-    href: '/applications',
+    href: '/listing-applications',
   },
   {
     text: 'Manage Listings',
