@@ -30,3 +30,25 @@ export async function getApplicationsByUserId(
     },
   })
 }
+
+export async function getApplicationCountByOwner(
+  ownerId: string
+): Promise<number> {
+  return prisma.propertyApplication.count({ where: { listing: { ownerId } } })
+}
+
+export async function getApplicationsByOwner(
+  ownerId: string
+): Promise<PropertyApplication[]> {
+  return prisma.propertyApplication.findMany({
+    where: {
+      listing: {
+        ownerId,
+      },
+    },
+    include: {
+      tenants: true,
+      listing: true,
+    },
+  })
+}

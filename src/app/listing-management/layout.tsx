@@ -7,6 +7,7 @@ import { ReactNode } from 'react'
 import TabLink from '@/components/ui/tab-link'
 import { protectRoute } from '@/utils/protect-route'
 import Link from 'next/link'
+import { getApplicationCountByOwner } from '@/lib/applications'
 
 export default async function ListingManagementLayout({
   children,
@@ -15,6 +16,7 @@ export default async function ListingManagementLayout({
 }) {
   const authUser = await protectRoute('/')
   const listings = await getListingsByOwnerId(authUser.id)
+  const applicationCount = await getApplicationCountByOwner(authUser.id)
   return (
     <div>
       <div className="grid gap-[64px] mt-4 grid-cols-4 min-h-[100vh]">
@@ -26,8 +28,16 @@ export default async function ListingManagementLayout({
             Overview
           </Link>
           <div className="flex flex-col gap-2 my-4">
-            <Link href="/listing-management/applications">
-              Lease Applications
+            <Link
+              href="/listing-management/applications"
+              className="flex items-center justify-between"
+            >
+              <span>Lease Applications</span>
+              {applicationCount && (
+                <span className="text-xs text-white bg-blue-500 h-[16px] w-[16px] rounded-full flex items-center justify-center">
+                  {applicationCount}
+                </span>
+              )}
             </Link>
             <Link href="/listing-management/tasks">Maintenance</Link>
             <Link href="/listing-management/payments">Payments</Link>

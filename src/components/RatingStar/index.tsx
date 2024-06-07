@@ -7,7 +7,6 @@ export default function RatingStar({
   rating: number | null
   userName?: string
 }) {
-  console.log(rating)
   return (
     <div className="flex items-center gap-2">
       {rating ? (
